@@ -50,12 +50,15 @@ kbd { font: 400 19px/1 var(--ticket); background: var(--thermal); border: 1.5px 
 .tab-label { writing-mode: vertical-rl; font: 400 21px/1 var(--display); }
 html[data-room="kitchen"] .kitchen-tab { display: none; }
 
-@media (max-width: 720px) {
-  .band { padding-block: 52px; }
+@media (max-width: 980px) {
   .signbar-inner { flex-wrap: wrap; gap: 0 16px; min-height: 0; padding-top: 8px; }
-  .sign { font-size: 22px; }
   .switch { margin-left: auto; }
   .signbar nav { order: 3; flex: 1 0 100%; gap: 18px; }
+}
+
+@media (max-width: 720px) {
+  .band { padding-block: 52px; }
+  .sign { font-size: 22px; }
   .kitchen-tab { top: auto; bottom: max(14px, env(safe-area-inset-bottom, 0px)); right: max(14px, env(safe-area-inset-right, 0px)); translate: none; justify-content: center; width: 54px; height: 54px; padding: 0; border: 2px solid var(--steel-deep); border-radius: 50%; }
   .kitchen-tab:hover { transform: none; }
   .tab-port { width: 32px; height: 32px; border-width: 5px; }
