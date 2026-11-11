@@ -1,0 +1,163 @@
+---
+import { bySlug } from '../data/projects';
+import { url } from '../lib/url';
+
+const project = bySlug('free-curb-atl')!;
+const kitchen = project.kitchen!;
+const refire = kitchen.refires![2];
+---
+<section class="band door-band" id="door" aria-labelledby="door-title">
+  <div class="wrap">
+    <h2 class="section-title" id="door-title">The kitchen door</h2>
+    <p class="lede">Every dish has a kitchen. Drag the door to peek, or push through. Back there you get the architecture, real code from the repo, and a Refire log of what broke and how it got fixed.</p>
+    <div class="house" data-house>
+      <div class="boh">
+        <p class="tape">{project.number} {project.name}</p>
+        <ol class="pipe">
+          {kitchen.line.map((s) => <li>{s.step}</li>)}
+        </ol>
+        <div class="refire-card">
+          <span class="stamp">Refire</span>
+          <p>SENT BACK: {refire.sentBack}</p>
+          <p>FIXED: {refire.fixed}</p>
+        </div>
+      </div>
+      <div class="door" data-door>
+        <div class="hinge" aria-hidden="true"></div>
+        <div class="door-face">
+          <span class="door-no">{project.number}</span>
+          <h3>{project.name}</h3>
+          <p>{project.short}</p>
+          <p class="door-result">2,035 blocks, 285 km of curb</p>
+        </div>
+        <div class="ring" aria-hidden="true"></div>
+        <div class="pushplate" aria-hidden="true">Push</div>
+        <div class="shade" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <a class="key" href={url(`kitchen/${project.slug}/`)}>Push through to the kitchen</a>
+      <button class="key key-quiet" type="button" data-peek aria-pressed="false">Peek</button>
+      <span class="hint">Or drag the door by its right side. Let go and it flaps shut.</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { clamp, releaseSpeed, spring, type Sample } from '../lib/physics';
+  import { play } from '../lib/sound';
+
+  const house = document.querySelector<HTMLElement>('[data-house]');
+  const door = document.querySelector<HTMLElement>('[data-door]');
+  const peek = document.querySelector<HTMLButtonElement>('[data-peek]');
+
+  if (house && door && peek) {
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const OPEN = 83;
+    let angle = 0;
+    let speed = 0;
+    let target = 0;
+    let dragging = false;
+    let frame = 0;
+    let last = 0;
+    let startX = 0;
+    let startAngle = 0;
+    let samples: Sample[] = [];
+
+    const paint = () => {
+      // A double-action door swings past closed toward you a little before it settles.
+      const shown = angle < 0 ? angle * 0.4 : angle;
+      door.style.transform = `rotateY(${shown.toFixed(2)}deg)`;
+      door.style.setProperty('--shade', (Math.min(1, Math.abs(shown) / 90) * 0.5).toFixed(3));
+    };
+
+    const tick = (t: number) => {
+      const dt = Math.min(0.032, (t - last) / 1000 || 0.016);
+      last = t;
+      if (!dragging) {
+        const closing = target === 0;
+        [angle, speed] = spring(angle, speed, target, closing ? 44 : 60, closing ? 3.2 : 11, dt);
+        if (angle > OPEN + 4) {
+          angle = OPEN + 4;
+          speed *= -0.3;
+        }
+        if (Math.abs(angle - target) < 0.06 && Math.abs(speed) < 0.4) {
+          angle = target;
+          speed = 0;
+          paint();
+          frame = 0;
+          return;
+        }
+      }
+      paint();
+      frame = requestAnimationFrame(tick);
+    };
+
+    const run = () => {
+      if (frame) return;
+      last = performance.now();
+      frame = requestAnimationFrame(tick);
+    };
+
+    const setOpen = (open: boolean) => {
+      target = open ? OPEN : 0;
+      peek.setAttribute('aria-pressed', String(open));
+      peek.textContent = open ? 'Let it swing shut' : 'Peek';
+      play('door');
+      if (calm) {
+        angle = target;
+        speed = 0;
+        paint();
+        return;
+      }
+      run();
+    };
+
+    peek.addEventListener('click', () => {
+      if (target === 0) speed = Math.max(speed, 210);
+      setOpen(target === 0);
+    });
+
+    door.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      door.setPointerCapture(e.pointerId);
+      startX = e.clientX;
+      startAngle = angle;
+      samples = [{ t: e.timeStamp, value: angle }];
+      speed = 0;
+      run();
+    });
+
+    door.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      angle = clamp(startAngle + ((startX - e.clientX) / house.clientWidth) * 120, -12, OPEN + 4);
+      samples.push({ t: e.timeStamp, value: angle });
+      if (samples.length > 8) samples.shift();
+      if (calm) paint();
+    });
+
+    const release = () => {
+      if (!dragging) return;
+      dragging = false;
+      speed = releaseSpeed(samples, 500);
+      if (speed < -260 && angle < 70) setOpen(false);
+      else setOpen(angle > 38 || (speed > 260 && angle > 8));
+    };
+    door.addEventListener('pointerup', release);
+    door.addEventListener('pointercancel', release);
+
+    // A small nudge the first time the door scrolls into view, so it reads as a door.
+    if (!calm && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (!entries[0].isIntersecting) return;
+          io.disconnect();
+          speed = 150;
+          run();
+        },
+        { threshold: 0.55 },
+      );
+      io.observe(house);
+    }
+  }
+</script>

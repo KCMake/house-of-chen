@@ -1,0 +1,34 @@
+/* Every color comes from an object in the restaurant. */
+:root {
+  --check: #dfe9d5;       /* guest check paper */
+  --rule: #8fb09a;        /* the ruling printed on a guest check */
+  --check-ink: #2f5244;   /* small printed labels on the check */
+  --menu: #f0b92f;        /* goldenrod menu stock */
+  --red: #ab1018;         /* menu ink and serial-number red */
+  --red-deep: #7f0b12;
+  --ink: #16130e;         /* press black */
+  --pen: #1c3da3;         /* ballpoint */
+  --thermal: #f5f6f2;     /* receipt paper */
+  --steel: #b3babf;       /* kitchen stainless */
+  --steel-light: #d6dadd;
+  --steel-deep: #59616a;
+  --tape: #2a78bd;        /* painter's tape */
+  --cloth: #7b1418;       /* banquet tablecloth */
+  --kraft: #c9a678;       /* butcher paper */
+  --greenbar: #dcebd6;    /* continuous-form printer paper */
+  --jade: #1f5f4a;        /* the rim on the plates */
+  --phone: #e9dcc0;       /* the beige wall phone */
+  --wood: #6b4527;
+  --brass: #c9a24a;
+
+  --display: "League Gothic", "Arial Narrow", Impact, sans-serif;
+  --dish: "Caprasimo", "Cooper Black", Georgia, serif;
+  --body: "Libre Franklin", "Franklin Gothic Book", Arial, sans-serif;
+  --ticket: "VT323", "Courier New", monospace;
+  --hand: "Reenie Beanie", "Bradley Hand", cursive;
+  --marker: "Permanent Marker", "Marker Felt", cursive;
+  --hanzi: "Songti TC", "PingFang TC", "Noto Serif CJK TC", "Noto Sans CJK TC", serif;
+
+  --wrap: 1080px;
+  color-scheme: light;
+}

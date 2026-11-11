@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import SignBar from '../components/SignBar.astro';
+import { url } from '../lib/url';
+import '../styles/front.css';
+---
+<Base title="86'd: House of Chen" description="That page is out of stock." room="front" noindex>
+  <SignBar room="front" />
+  <main id="main" class="band menu-stock">
+    <div class="wrap">
+      <p class="mega">86'd.</p>
+      <h1 class="section-title">That page is out of stock tonight.</h1>
+      <p class="lede">In a kitchen, 86'd means we ran out. The link may be old, or the page may have moved.</p>
+      <div class="controls">
+        <a class="key" href={url()}>Back to the menu</a>
+        <a class="key key-quiet" href={url('kitchen/')}>Try the kitchen</a>
+      </div>
+    </div>
+  </main>
+</Base>

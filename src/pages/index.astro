@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import DoorDemo from '../components/DoorDemo.astro';
+import Hero from '../components/Hero.astro';
+import KitchenTab from '../components/KitchenTab.astro';
+import LazySusan from '../components/LazySusan.astro';
+import Menu from '../components/Menu.astro';
+import OrderPad from '../components/OrderPad.astro';
+import Phone from '../components/Phone.astro';
+import SignBar from '../components/SignBar.astro';
+import ThankYou from '../components/ThankYou.astro';
+import Wall from '../components/Wall.astro';
+import { person } from '../data/site';
+import '../styles/front.css';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: person.name,
+  alumniOf: 'Georgia Institute of Technology',
+  sameAs: [person.linkedin, person.github],
+  knowsAbout: ['Backend systems', 'AI agents', 'Embedded systems'],
+};
+---
+<Base
+  title="Kenney Chen: full stack since 2016"
+  description="Kenney Chen studies Computer Engineering at Georgia Tech and grew up working in his family's restaurant. His portfolio is that restaurant: a menu out front, and the engineering in the kitchen."
+  room="front"
+>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
+  <SignBar room="front" />
+  <main id="main">
+    <Hero />
+    <Menu />
+    <DoorDemo />
+    <LazySusan />
+    <Wall />
+    <Phone />
+    <OrderPad />
+  </main>
+  <ThankYou />
+  <KitchenTab />
+</Base>

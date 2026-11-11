@@ -1,0 +1,216 @@
+---
+import { fortunes, learnChinese, lucky, person, timeline } from '../data/site';
+---
+<section class="band wall-band" id="wall" aria-labelledby="wall-title">
+  <div class="wrap">
+    <h2 class="section-title" id="wall-title">The wall by the register</h2>
+    <p class="lede">Every restaurant has one. Ours has the grade card, a calendar from the supplier, and a bowl of fortune cookies.</p>
+    <div class="wall">
+      <div class="window">
+        <p class:list={['neon', { off: !person.open }]}>
+          <span class="neon-word">{person.open ? 'OPEN' : 'CLOSED'}</span>
+          <span class="neon-sub">{person.open ? 'for Summer 2027 internships' : 'back soon'}</span>
+        </p>
+      </div>
+
+      <div class="grade">
+        <p class="grade-top">Inspection report</p>
+        <p class="grade-letter" aria-hidden="true">A</p>
+        <p class="grade-score">Score <span class="visually-hidden">grade A, </span>{person.gpa}</p>
+        <p class="grade-meta">Computer Engineering, Georgia Tech. Inspected every semester. First in my family to go to college.</p>
+      </div>
+
+      <div class="plaque">
+        <p class="plaque-title">Employee of the month</p>
+        <p class="brass">Kenney</p>
+        <p class="plaque-note">Every month since 2016. It's a family business.</p>
+      </div>
+
+      <div class="calendar" data-calendar>
+        <div class="cal-binding" aria-hidden="true"></div>
+        <div class="cal-pages" aria-live="polite">
+          {timeline.map((page) => (
+            <article class="cal-page" data-year={page.year} aria-label={`${page.year}: ${page.title}`}>
+              <p class="cal-top"><span>Year of the {page.animal}</span><span class="hanzi" lang="zh-Hant">{page.zodiac}</span></p>
+              <p class="cal-year">{page.year}</p>
+              <h3 class="cal-title">{page.title}</h3>
+              <p class="cal-text">{page.text}</p>
+            </article>
+          ))}
+        </div>
+        <div class="cal-controls">
+          <button class="key key-small" type="button" data-tear>Tear off {timeline[0].year}</button>
+          <span class="cal-count" data-cal-count>1 of {timeline.length}</span>
+        </div>
+      </div>
+
+      <div class="cookie-bowl" data-cookie data-fortunes={JSON.stringify(fortunes)}>
+        <button class="cookie" type="button" aria-label="Fortune cookie. Press and hold to crack it.">
+          <svg viewBox="0 0 120 80" aria-hidden="true">
+            <g class="half half-left"><path d="M60 14C38 10 10 24 8 46c-1 12 10 20 22 18 12-2 22-10 30-18z" fill="#dba54d" stroke="#16130e" stroke-width="2.5" stroke-linejoin="round" /><path d="M30 64c8-6 18-12 30-18" fill="none" stroke="#a66f1e" stroke-width="2" /></g>
+            <g class="half half-right"><path d="M60 14c22-4 50 10 52 32 1 12-10 20-22 18-12-2-22-10-30-18z" fill="#e3b05a" stroke="#16130e" stroke-width="2.5" stroke-linejoin="round" /><path d="M90 64c-8-6-18-12-30-18" fill="none" stroke="#a66f1e" stroke-width="2" /></g>
+            <path class="slip-peek" d="M57 44l26 11-2 6-26-11z" fill="#fff" stroke="#16130e" stroke-width="1.5" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <p class="hint">Press and hold to crack it.</p>
+        <div class="slip-wrap" data-slip hidden>
+          <p class="slip slip-front" data-fortune></p>
+          <p class="slip slip-back">Learn Chinese <span class="hanzi" lang="zh-Hant">{learnChinese.hanzi}</span>{learnChinese.pinyin}, {learnChinese.meaning}<span class="lucky">LUCKY {lucky.join(' ')}</span></p>
+          <button class="key key-small" type="button" data-another>Another cookie</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { play } from '../lib/sound';
+
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // The tear-off calendar: one page per year.
+  const calendar = document.querySelector<HTMLElement>('[data-calendar]');
+  if (calendar) {
+    const pages = [...calendar.querySelectorAll<HTMLElement>('.cal-page')];
+    const button = calendar.querySelector<HTMLButtonElement>('[data-tear]')!;
+    const count = calendar.querySelector<HTMLElement>('[data-cal-count]')!;
+    let current = 0;
+    let busy = false;
+    calendar.classList.add('live');
+
+    const sync = () => {
+      pages.forEach((p, i) => {
+        p.setAttribute('aria-hidden', String(i !== current));
+        p.style.zIndex = i === current ? '2' : '0';
+      });
+      count.textContent = `${current + 1} of ${pages.length}`;
+      button.textContent = current === pages.length - 1 ? `Back to ${pages[0].dataset.year}` : `Tear off ${pages[current].dataset.year}`;
+    };
+
+    const tear = () => {
+      if (busy) return;
+      const next = (current + 1) % pages.length;
+      if (next === 0) {
+        current = 0;
+        sync();
+        play('ding');
+        return;
+      }
+      busy = true;
+      const leaving = pages[current];
+      pages[next].setAttribute('aria-hidden', 'false');
+      pages[next].style.zIndex = '1';
+      play('rip');
+      const done = () => {
+        current = next;
+        busy = false;
+        sync();
+      };
+      if (calm) return done();
+      leaving
+        .animate(
+          [
+            { transform: 'none', opacity: 1 },
+            { transform: 'translate(24px, 30px) rotate(8deg)', opacity: 1, offset: 0.35 },
+            { transform: `translate(70px, ${calendar.offsetHeight}px) rotate(24deg)`, opacity: 0 },
+          ],
+          { duration: 750, easing: 'cubic-bezier(.4,0,.8,.6)' },
+        )
+        .finished.then(done, done);
+    };
+
+    button.addEventListener('click', tear);
+
+    // With a mouse you can also pull a page down to rip it.
+    let pullFrom: number | null = null;
+    calendar.querySelector('.cal-pages')!.addEventListener('pointerdown', (e) => {
+      if ((e as PointerEvent).pointerType === 'mouse') pullFrom = (e as PointerEvent).clientY;
+    });
+    addEventListener('pointerup', (e) => {
+      if (pullFrom !== null && e.clientY - pullFrom > 60) tear();
+      pullFrom = null;
+    });
+    sync();
+  }
+
+  // The fortune cookie: press and hold until it snaps.
+  const bowl = document.querySelector<HTMLElement>('[data-cookie]');
+  if (bowl) {
+    const cookie = bowl.querySelector<HTMLButtonElement>('.cookie')!;
+    const slip = bowl.querySelector<HTMLElement>('[data-slip]')!;
+    const fortune = bowl.querySelector<HTMLElement>('[data-fortune]')!;
+    const again = bowl.querySelector<HTMLButtonElement>('[data-another]')!;
+    const fortunes: string[] = JSON.parse(bowl.dataset.fortunes ?? '[]');
+    let next = Math.floor(Math.random() * fortunes.length);
+    let holdTimer = 0;
+    let cracked = false;
+    let crackedByHold = false;
+
+    const crumbs = () => {
+      if (calm) return;
+      const box = cookie.getBoundingClientRect();
+      const home = bowl.getBoundingClientRect();
+      for (let i = 0; i < 9; i++) {
+        const crumb = document.createElement('span');
+        crumb.className = 'crumb';
+        crumb.style.left = `${box.left - home.left + box.width / 2}px`;
+        crumb.style.top = `${box.top - home.top + box.height * 0.55}px`;
+        bowl.append(crumb);
+        const dx = (Math.random() - 0.5) * 140;
+        const dy = 40 + Math.random() * 70;
+        crumb
+          .animate([{ transform: 'translate(0, 0)' }, { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }], {
+            duration: 600 + Math.random() * 300,
+            easing: 'cubic-bezier(.3,0,.7,1)',
+          })
+          .finished.then(() => crumb.remove(), () => crumb.remove());
+      }
+    };
+
+    const crack = () => {
+      if (cracked) return;
+      cracked = true;
+      cookie.classList.remove('pressing');
+      cookie.classList.add('cracked');
+      cookie.setAttribute('aria-label', 'Fortune cookie, cracked open');
+      play('crack');
+      fortune.textContent = fortunes[next % fortunes.length];
+      next += 1;
+      slip.hidden = false;
+      crumbs();
+    };
+
+    cookie.addEventListener('pointerdown', (e) => {
+      if (cracked || e.button !== 0) return;
+      cookie.classList.add('pressing');
+      holdTimer = window.setTimeout(() => {
+        crackedByHold = true;
+        crack();
+      }, 650);
+    });
+    const letGo = () => {
+      clearTimeout(holdTimer);
+      cookie.classList.remove('pressing');
+    };
+    cookie.addEventListener('pointerup', letGo);
+    cookie.addEventListener('pointerleave', letGo);
+    cookie.addEventListener('pointercancel', letGo);
+    cookie.addEventListener('contextmenu', (e) => e.preventDefault());
+    cookie.addEventListener('click', (e) => {
+      if (crackedByHold) {
+        crackedByHold = false;
+        return;
+      }
+      // Keyboards can't press and hold, so Enter or Space cracks it right away.
+      if (e.detail === 0) crack();
+    });
+
+    again.addEventListener('click', () => {
+      cracked = false;
+      cookie.classList.remove('cracked');
+      cookie.setAttribute('aria-label', 'Fortune cookie. Press and hold to crack it.');
+      slip.hidden = true;
+      cookie.focus();
+    });
+  }
+</script>

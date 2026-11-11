@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/front.css';
+
+// The link preview. scripts/make-assets.mjs screenshots this page at 1200 by 630.
+const ticket = [
+  '     HOUSE OF CHEN',
+  '',
+  'ORDER 2029     TABLE 1',
+  'SERVER: KENNEY CHEN',
+  '-----------------------',
+  '1 COMPUTER ENGINEERING',
+  '  GEORGIA TECH  GPA 4.00',
+  '1 AI PHONE ORDERING',
+  '  LIVE IN A RESTAURANT',
+  '1 BUILDFORGE',
+  '  5,000+ MEMBERS',
+  '-----------------------',
+  'NOW SEEKING',
+  'SWE INTERN, SUMMER 2027',
+].join('\n');
+---
+<Base title="Kenney Chen: full stack since 2016" description="Link preview image." room="plain" noindex>
+  <main id="main" class="menu-stock" style="position:relative;width:1200px;height:630px;overflow:hidden">
+    <div class="rail" aria-hidden="true"></div>
+    <div style="position:absolute;left:72px;top:96px;width:640px">
+      <p class="hero-name" style="font-size:46px">Kenney Chen</p>
+      <h1 class="mega" style="font-size:176px">Full stack<br />since 2016.</h1>
+      <p class="pen-note" style="font-size:40px">cook, cashier, shift manager.</p>
+    </div>
+    <div class="ticket-hang" style="position:absolute;right:86px;top:-6px;width:330px;animation:none">
+      <div class="ticket" style="padding-bottom:40px"><pre>{ticket}</pre></div>
+    </div>
+  </main>
+</Base>

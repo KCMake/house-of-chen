@@ -1,0 +1,20 @@
+---
+import type { Packet } from '../data/types';
+
+interface Props {
+  stack: Packet[];
+  spice?: number;
+}
+
+const { stack, spice = 0 } = Astro.props;
+---
+<div class="tags">
+  {stack.map((p) => <span class={`packet ${p.kind}`}>{p.name}</span>)}
+  {spice > 0 && (
+    <span class="spice" role="img" aria-label={`Spice level ${spice} of 3`}>
+      {Array.from({ length: spice }, () => (
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#chili" /></svg>
+      ))}
+    </span>
+  )}
+</div>

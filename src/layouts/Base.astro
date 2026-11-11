@@ -1,0 +1,81 @@
+---
+import '@fontsource/league-gothic/400.css';
+import '@fontsource/caprasimo/400.css';
+import '@fontsource/libre-franklin/400.css';
+import '@fontsource/libre-franklin/400-italic.css';
+import '@fontsource/libre-franklin/600.css';
+import '@fontsource/libre-franklin/800.css';
+import '@fontsource/vt323/400.css';
+import '@fontsource/reenie-beanie/400.css';
+import '@fontsource/permanent-marker/400.css';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import { url } from '../lib/url';
+
+interface Props {
+  title: string;
+  description: string;
+  room: 'front' | 'kitchen' | 'plain';
+  noindex?: boolean;
+}
+
+const { title, description, room, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const image = new URL(url('og.png'), Astro.site);
+---
+<!doctype html>
+<html lang="en" data-room={room}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href={url('favicon.svg')} type="image/svg+xml" />
+    <meta name="theme-color" content="#ab1018" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <script is:inline>
+      // Front of house and back of house are two sides of one door. When a navigation crosses
+      // from one side to the other, tag the view transition so the CSS can swing the page.
+      (function () {
+        var side = function (p) { return /\/kitchen(\/|$)/.test(p) ? 'kitchen' : 'front'; };
+        addEventListener('pageswap', function () {
+          try { sessionStorage.setItem('hoc:from', location.pathname); } catch (e) {}
+        });
+        addEventListener('pagereveal', function (e) {
+          if (!e.viewTransition) return;
+          var from = null;
+          try { from = navigation.activation.from && new URL(navigation.activation.from.url).pathname; } catch (err) {}
+          if (!from) { try { from = sessionStorage.getItem('hoc:from'); } catch (err) {} }
+          if (!from || side(from) === side(location.pathname)) return;
+          if (e.viewTransition.types) e.viewTransition.types.add(side(location.pathname) === 'kitchen' ? 'door-open' : 'door-close');
+        });
+      })();
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <svg class="defs" aria-hidden="true">
+      <symbol id="chili" viewBox="0 0 24 24"><path fill="currentColor" d="M17 3c1 1 1.4 2.4 1 3.6 1.7 1 2.4 3 1.7 5.2C18 17 12 21.5 4.5 21c-.9 0-1-1.1-.2-1.4 4.4-1.7 7-5 8-9.3.4-1.9 1.9-3.4 3.9-3.7.2-1 0-2-.8-2.8z" /></symbol>
+    </svg>
+    <slot />
+    <script>
+      // The email address is assembled in the browser so it isn't sitting in the HTML for scrapers.
+      for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-mail]')) {
+        const address = `${link.dataset.mail}@${link.dataset.domain}`;
+        link.href = `mailto:${address}`;
+        if (link.hasAttribute('data-show-address')) link.textContent = address;
+      }
+      console.log('%cHi. Back of house is at /kitchen/, and the code is at github.com/KCMake/house-of-chen.', 'font: 15px monospace');
+    </script>
+  </body>
+</html>
