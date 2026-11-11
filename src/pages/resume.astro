@@ -1,0 +1,56 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import TopBar from '../components/TopBar.astro';
+import { emailSpoken, person, resume } from '../data/site';
+import { url } from '../lib/url';
+import '../styles/resume.css';
+---
+<Base
+  title="Kenney Chen: resume"
+  description="Kenney Chen's one-page resume. Computer engineering at Georgia Tech, looking for a Summer 2027 software engineering internship."
+>
+  <TopBar current="resume" />
+  <main id="main" class="wrap resume-page">
+    <div class="resume-bar">
+      <p>One page, with the same facts as the rest of the site.</p>
+      <a class="pdf-link" href={url(person.resumePdf)} download>Download the PDF</a>
+    </div>
+    <div class="resume">
+      <h1>{person.name}</h1>
+      <p class="contact">
+        {person.location} | <a href="#contact" data-mail={person.email.user} data-domain={person.email.domain} data-show-address>{emailSpoken}</a> | <a href={person.linkedin}>linkedin.com/in/kenneychen</a> | <a href={person.github}>github.com/KCMake</a>
+      </p>
+      <p class="seeking">{person.seeking}.</p>
+
+      <h2>Education</h2>
+      <div class="entry">
+        <div class="entry-head"><b>Georgia Institute of Technology</b><span>Expected {person.graduation}</span></div>
+        <p>{person.degree}, GPA {person.gpa}. First in my family to go to college.</p>
+      </div>
+
+      <h2>Experience</h2>
+      {resume.experience.map((job) => (
+        <div class="entry">
+          <div class="entry-head"><span><b>{job.title}</b>, {job.org}</span><span>{job.when}</span></div>
+          <ul>{job.bullets.map((b) => <li>{b}</li>)}</ul>
+        </div>
+      ))}
+
+      <h2>Projects</h2>
+      {resume.projects.map((p) => (
+        <div class="entry">
+          <div class="entry-head"><b>{p.name}</b><span>{p.stack}</span></div>
+          <p>{p.line}</p>
+        </div>
+      ))}
+
+      <h2>Skills</h2>
+      <ul>{resume.skills.map((s) => <li>{s}</li>)}</ul>
+
+      <h2>Leadership and honors</h2>
+      <ul>{resume.honors.map((h) => <li>{h}</li>)}</ul>
+    </div>
+  </main>
+  <Footer />
+</Base>
