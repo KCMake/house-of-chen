@@ -11,8 +11,8 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${port}${base}`,
     reducedMotion: 'reduce',
-    // Locally, use the installed Chrome instead of downloading a browser.
-    ...(process.env.CI ? {} : { channel: 'chrome' }),
+    // Use the installed Google Chrome, here and on GitHub's Ubuntu runners, so nothing has to be downloaded.
+    channel: 'chrome',
   },
   projects: [
     { name: 'desktop', use: { viewport: { width: 1280, height: 860 } } },
