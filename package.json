@@ -1,0 +1,36 @@
+{
+  "name": "house-of-chen",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Kenney Chen's portfolio, built as the restaurant he grew up in.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.23"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "look": "node scripts/ai-look-check.mjs",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "assets": "node scripts/make-assets.mjs",
+    "ci": "npm run look && npm test && npm run build && npm run test:e2e"
+  },
+  "dependencies": {
+    "@fontsource/caprasimo": "5.3.0",
+    "@fontsource/league-gothic": "5.3.0",
+    "@fontsource/libre-franklin": "5.3.0",
+    "@fontsource/permanent-marker": "5.3.0",
+    "@fontsource/reenie-beanie": "5.3.0",
+    "@fontsource/vt323": "5.3.0",
+    "astro": "7.4.2"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
+    "pdf-lib": "1.17.1",
+    "vitest": "5.0.5"
+  }
+}
