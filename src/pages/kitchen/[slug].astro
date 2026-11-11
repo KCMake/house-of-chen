@@ -1,0 +1,134 @@
+---
+import Base from '../../layouts/Base.astro';
+import CodePrintout from '../../components/CodePrintout.astro';
+import Packets from '../../components/Packets.astro';
+import SignBar from '../../components/SignBar.astro';
+import { kitchenTickets } from '../../data/projects';
+import type { Project } from '../../data/types';
+import { seeded } from '../../lib/physics';
+import { url } from '../../lib/url';
+import '../../styles/front.css';
+import '../../styles/kitchen.css';
+
+export function getStaticPaths() {
+  return kitchenTickets.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const kitchen = project.kitchen!;
+const index = kitchenTickets.indexOf(project);
+const next = kitchenTickets[(index + 1) % kitchenTickets.length];
+const random = seeded(project.slug);
+// Each stamp lands at its own angle with its own amount of ink, the same on every visit.
+const stamps = (kitchen.refires ?? []).map(() => ({ tilt: -9 + random() * 6, ink: 0.78 + random() * 0.22 }));
+---
+<Base
+  title={`${project.name}: back of house`}
+  description={`How ${project.name} was built: the architecture, real code, and what broke along the way.`}
+  room="kitchen"
+>
+  <SignBar room="kitchen" />
+  <main id="main" class="kitchen">
+    <div class="tube" aria-hidden="true"></div>
+    <article>
+      <header class="band">
+        <div class="wrap k-head-grid">
+          <div>
+            <p class="tape tape-big">{project.number}</p>
+            <h1 class="k-title">{project.name}</h1>
+            <p class="k-lede">{project.short}</p>
+          </div>
+          <aside class="order-ticket" aria-label="Order details">
+            <dl>
+              {project.role && (<><dt>ROLE</dt><dd>{project.role}</dd></>)}
+              {project.when && (<><dt>WHEN</dt><dd>{project.when}</dd></>)}
+              <dt>RESULT</dt><dd>{project.result}</dd>
+            </dl>
+            <Packets stack={project.stack} spice={project.spice} />
+            {project.links && project.links.length > 0 && (
+              <p class="links">{project.links.map((l) => <a href={l.url}>{l.label}</a>)}</p>
+            )}
+          </aside>
+        </div>
+      </header>
+
+      <section class="band" aria-labelledby="order-title">
+        <div class="wrap">
+          <h2 class="k-h2" id="order-title">The order</h2>
+          <div class="clipboard">
+            {kitchen.order.map((p) => <p>{p}</p>)}
+            {kitchen.credit && <p class="credit">{kitchen.credit}</p>}
+          </div>
+        </div>
+      </section>
+
+      <section class="band" aria-labelledby="line-title">
+        <div class="wrap">
+          <h2 class="k-h2" id="line-title">On the line</h2>
+          <ol class="kraft">
+            {kitchen.line.map((s) => (
+              <li><b>{s.step}</b>{s.detail && <span>{s.detail}</span>}</li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {kitchen.printouts && kitchen.printouts.length > 0 && (
+        <section class="band" aria-labelledby="printouts-title">
+          <div class="wrap">
+            <h2 class="k-h2" id="printouts-title">Printouts</h2>
+            {kitchen.printouts.map((p) => <CodePrintout printout={p} />)}
+          </div>
+        </section>
+      )}
+
+      {kitchen.refires && kitchen.refires.length > 0 && (
+        <section class="band" aria-labelledby="refire-title">
+          <div class="wrap">
+            <h2 class="k-h2" id="refire-title">Refire log</h2>
+            <div class="refires">
+              {kitchen.refires.map((r, i) => (
+                <article class="refire" style={`--tilt:${stamps[i].tilt.toFixed(1)}deg;--ink-level:${stamps[i].ink.toFixed(2)}`}>
+                  <span class="stamp">Refire</span>
+                  <p><b>SENT BACK:</b> {r.sentBack}</p>
+                  <p><b>FIXED:</b> {r.fixed}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {(kitchen.cut || kitchen.tally) && (
+        <section class="band" aria-label="The whiteboard">
+          <div class="wrap k-two">
+            {kitchen.cut && (
+              <div class="whiteboard">
+                <h2>86'd</h2>
+                <ul>{kitchen.cut.map((c) => <li><s><span>{c.what}</span></s><br />{c.why}</li>)}</ul>
+              </div>
+            )}
+            {kitchen.tally && (
+              <div class="whiteboard">
+                <h2>Tally</h2>
+                <div class="tally">{kitchen.tally.map((t) => <div><b>{t.value}</b><span>{t.label}</span></div>)}</div>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      <nav class="band" aria-label="More tickets">
+        <div class="wrap k-nav">
+          <a class="key" href={url()}>Back to the front</a>
+          <a class="key key-quiet" href={url(`kitchen/${next.slug}/`)}>Next ticket: {next.name}</a>
+          <a class="key key-quiet" href={url('kitchen/')}>All tickets</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+</Base>

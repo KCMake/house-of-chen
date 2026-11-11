@@ -1,0 +1,103 @@
+/* Back of house: stainless steel, blue tape, and tickets */
+.kitchen { background: repeating-linear-gradient(90deg, rgb(255 255 255 / 0.06) 0 2px, rgb(0 0 0 / 0.04) 2px 5px), linear-gradient(#c3c9cd, #a3abb1); min-height: 100vh; }
+.tube { position: relative; height: 14px; margin: 0 max(16px, env(safe-area-inset-right, 0px)) 0 max(16px, env(safe-area-inset-left, 0px)); background: linear-gradient(#ffffff, #e9f3f1); border-radius: 0 0 7px 7px; box-shadow: 0 6px 28px rgb(220 245 240 / 0.9); }
+@media (prefers-reduced-motion: no-preference) { .tube { animation: tube 0.9s steps(1, end) 1; } }
+@keyframes tube { 0%, 18%, 30% { opacity: 0.2; } 12%, 24%, 40%, 100% { opacity: 1; } }
+.kitchen .band { padding-block: 48px; }
+.k-title { margin: 14px 0 10px; font: 400 clamp(54px, 9vw, 108px)/0.92 var(--display); color: var(--ink); }
+.tape-big { font-size: 26px; padding: 9px 18px; }
+.k-lede { max-width: 56ch; font-size: 19px; line-height: 1.5; }
+.k-h2 { margin: 0 0 18px; font: 400 clamp(38px, 5vw, 56px)/1 var(--display); }
+.k-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start; }
+
+/* Kitchen index: tickets on the rail */
+.k-rail { height: 22px; background: linear-gradient(#eef0f1, #9aa2a8 55%, #d2d6d9 56%, #868e94); box-shadow: 0 3px 6px rgb(0 0 0 / 0.3); position: relative; z-index: 2; }
+.k-tickets { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; margin: -8px 0 0; padding: 0; list-style: none; }
+.k-ticket { filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.25)); transform-origin: 50% 0; }
+.k-ticket:nth-child(odd) { transform: rotate(-0.8deg); }
+.k-ticket:nth-child(even) { transform: rotate(0.7deg); }
+.k-ticket a { --z: 7px; display: grid; gap: 4px; padding: 28px 16px 30px; background: var(--thermal); color: var(--ink); text-decoration: none; font: 400 20px/1.1 var(--ticket); -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--z)) 100%; mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--z)) 100%; }
+.k-ticket a:hover .kt-name { text-decoration: underline; }
+.kt-no { font: 400 34px/1 var(--display); color: var(--red); }
+.kt-name { font: 400 26px/1.1 var(--dish); }
+@media (prefers-reduced-motion: no-preference) { .k-ticket:hover { animation: sway 0.9s ease-in-out 1; } }
+@keyframes sway { 0%, 100% { rotate: 0deg; } 30% { rotate: 2deg; } 65% { rotate: -1.5deg; } }
+
+/* The order, clipped to the steel */
+.clipboard { position: relative; max-width: 760px; padding: 40px 34px 26px; background: #fff; box-shadow: 0 4px 12px rgb(0 0 0 / 0.25); }
+.clipboard::before { content: ""; position: absolute; left: 50%; top: -12px; width: 120px; height: 30px; translate: -50% 0; background: linear-gradient(#e5e8ea, #8c949a); border: 2px solid var(--steel-deep); border-radius: 4px; }
+.clipboard p { font-size: 18px; line-height: 1.6; }
+.credit { font: 400 26px/1.15 var(--hand); color: var(--pen); }
+.k-head-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; align-items: start; }
+.order-ticket { --z: 7px; padding: 22px 18px 30px; background: var(--thermal); box-shadow: 0 3px 8px rgb(0 0 0 / 0.25); -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--z)) 100%; mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / calc(2 * var(--z)) 100%; }
+.order-ticket dl { margin: 0 0 14px; font: 400 20px/1.15 var(--ticket); }
+.order-ticket dt { color: var(--check-ink); }
+.order-ticket dd { margin: 0 0 8px; }
+.order-ticket .links { display: grid; gap: 6px; margin-top: 14px; }
+
+/* On the line: Sharpie on butcher paper */
+.kraft { margin: 0; padding: 28px; list-style: none; background: var(--kraft); box-shadow: 0 4px 12px rgb(0 0 0 / 0.25); counter-reset: step; }
+.kraft li { position: relative; max-width: 640px; margin: 0 0 30px; padding: 12px 16px; border: 2.5px solid var(--ink); background: rgb(255 255 255 / 0.18); counter-increment: step; }
+.kraft li:nth-child(odd) { transform: rotate(-0.4deg); }
+.kraft li:nth-child(even) { transform: rotate(0.5deg); margin-left: 6%; }
+.kraft li:not(:last-child)::after { content: ""; position: absolute; left: 34px; bottom: -32px; height: 30px; border-left: 2.5px solid var(--ink); }
+.kraft li:not(:last-child)::before { content: ""; position: absolute; left: 28px; bottom: -32px; z-index: 1; border: 7px solid transparent; border-top: 9px solid var(--ink); border-bottom: 0; }
+.kraft li:last-child { margin-bottom: 0; }
+.kraft b { display: block; font: 400 26px/1.1 var(--marker); }
+.kraft span { display: block; margin-top: 4px; font-size: 16px; line-height: 1.45; }
+
+/* Printouts on green-bar paper, in red and black like a two-color kitchen printer */
+.printout { margin: 0 0 34px; }
+.printout-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 18px; padding: 8px 14px; background: var(--ink); color: var(--thermal); font: 400 19px/1.2 var(--ticket); }
+.printout-head a { color: var(--thermal); }
+.greenbar { position: relative; overflow-x: auto; padding: 14px 34px; background: repeating-linear-gradient(var(--greenbar) 0 66px, #fbfdf9 66px 132px); border-inline: 26px solid #f4f6f2; background-clip: padding-box; }
+.greenbar::before, .greenbar::after { content: ""; position: absolute; top: 0; bottom: 0; width: 12px; background: radial-gradient(circle at 6px 11px, var(--steel-deep) 3.5px, transparent 4px) 0 0 / 12px 22px repeat-y; }
+.greenbar::before { left: -20px; }
+.greenbar::after { right: -20px; }
+.greenbar pre { margin: 0; font: 400 17px/22px var(--ticket); color: var(--ink); }
+.greenbar code { display: grid; }
+.ln { display: grid; grid-template-columns: 3.2em auto; white-space: pre; }
+.ln .no { color: #55574e; user-select: none; -webkit-user-select: none; }
+.greenbar .k { color: var(--red); }
+.greenbar .c { color: #4f5249; font-style: italic; }
+.greenbar .s { color: var(--ink); }
+.greenbar .n { color: var(--red); }
+.printout-note { max-width: 62ch; margin: 12px 0 0; font: 400 25px/1.2 var(--hand); color: var(--pen); }
+
+/* Refire log */
+.refires { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 22px; }
+.refire { margin: 0; padding: 20px 18px; background: var(--thermal); box-shadow: 0 3px 8px rgb(0 0 0 / 0.25); font: 400 20px/1.15 var(--ticket); }
+.refire .stamp { transform: rotate(var(--tilt, -6deg)); opacity: var(--ink-level, 1); }
+.refire p { margin: 0 0 10px; }
+.refire b { color: var(--red); font-weight: 400; }
+
+/* The whiteboard: 86'd and the tally */
+.whiteboard { padding: 24px 26px; background: #fbfcfc; border: 10px solid #d8dcdf; box-shadow: 0 4px 12px rgb(0 0 0 / 0.25); color: #1c3a8a; }
+.whiteboard h2 { margin: 0 0 12px; font: 400 40px/1 var(--marker); color: #1a1a1a; }
+.whiteboard ul { margin: 0; padding: 0; list-style: none; }
+.whiteboard li { margin: 0 0 14px; font: 400 26px/1.15 var(--hand); }
+.whiteboard s { color: var(--red); text-decoration-thickness: 3px; }
+.whiteboard s span { color: #1a1a1a; }
+.tally { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+.tally div { padding-top: 6px; border-top: 3px solid #1c3a8a; }
+.tally b { display: block; font: 400 38px/1 var(--marker); color: #1a1a1a; }
+.tally span { font: 400 23px/1.1 var(--hand); }
+
+/* Mise en place: labeled deli containers */
+.shelf { margin-bottom: 22px; }
+.shelf h3 { margin: 0 0 10px; font: 400 26px/1 var(--display); }
+.shelf ul { display: flex; flex-wrap: wrap; gap: 12px 10px; margin: 0; padding: 0 0 12px; list-style: none; border-bottom: 8px solid var(--steel-deep); }
+.deli { display: grid; place-items: end center; width: 104px; height: 74px; padding: 0 6px 10px; border-radius: 4px 4px 10px 10px; background: linear-gradient(90deg, rgb(255 255 255 / 0.55), rgb(255 255 255 / 0.25)); border: 2px solid rgb(255 255 255 / 0.7); }
+.deli span { max-width: 100%; padding: 4px 6px; background: var(--tape); color: #fff; font: 400 14px/1.1 var(--marker); text-align: center; transform: rotate(-2deg); }
+
+.k-nav { display: flex; flex-wrap: wrap; gap: 14px; }
+
+@media (max-width: 860px) {
+  .k-head-grid, .k-two { grid-template-columns: minmax(0, 1fr); }
+  .kraft { padding: 20px 16px; }
+  .kraft li:nth-child(even) { margin-left: 0; }
+  .greenbar { padding: 14px 18px; border-inline-width: 18px; }
+  .greenbar::before { left: -15px; }
+  .greenbar::after { right: -15px; }
+  .clipboard { padding: 36px 20px 20px; }
+}
