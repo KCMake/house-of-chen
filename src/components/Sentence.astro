@@ -1,0 +1,31 @@
+---
+import CodeExcerpt from './CodeExcerpt.astro';
+import Pieces from './Pieces.astro';
+import { allPhrases, opensExcerpt, paragraphs, phrasesIn } from '../data/sentence';
+---
+<div class="sentence" data-sentence>
+  <div class="sentence-text" data-sentence-text>
+    {paragraphs.map((paragraph) => (
+      <div class="para">
+        <Pieces pieces={paragraph} />
+        {phrasesIn(paragraph).filter(opensExcerpt).map((phrase) => (
+          <div class="more more-figure" id={`more-${phrase.id}`} data-figure>
+            <CodeExcerpt excerpt={phrase.more} />
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+  <div class="sentence-controls" data-sentence-controls>
+    <span class="count"><span data-open-count>0</span> of {allPhrases.length} open</span>
+    <button type="button" class="open-all" data-open-all>Open everything</button>
+    <span>Highlighted phrases open, and some open again.</span>
+  </div>
+</div>
+
+<script>
+  import { initSentence } from '../scripts/sentence';
+
+  const root = document.querySelector<HTMLElement>('[data-sentence]');
+  if (root) initSentence(root);
+</script>

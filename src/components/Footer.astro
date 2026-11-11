@@ -1,0 +1,16 @@
+---
+import { emailSpoken, person } from '../data/site';
+import { url } from '../lib/url';
+---
+<footer class="footer" id="contact">
+  <div class="wrap footer-inner">
+    <h2 class="footer-title">Contact</h2>
+    <p class="footer-mail"><a href="#contact" data-mail={person.email.user} data-domain={person.email.domain} data-show-address>{emailSpoken}</a></p>
+    <p class="footer-links">
+      <a href={url(person.resumePdf)}>Resume (PDF)</a>
+      <a href={person.github}>GitHub</a>
+      <a href={person.linkedin}>LinkedIn</a>
+    </p>
+    <p class="footer-note">This site is one paragraph that opens up. <a href={url('work/this-site/')}>Here is how it's built</a>.</p>
+  </div>
+</footer>

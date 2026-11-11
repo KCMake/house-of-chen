@@ -1,0 +1,26 @@
+---
+import type { Piece } from '../data/sentence';
+import { isLink } from '../data/sentence';
+import { person } from '../data/site';
+import { url } from '../lib/url';
+
+// One stretch of the paragraph. A phrase that opens more text renders that text right after it,
+// in parentheses, and renders itself again for any phrases inside.
+interface Props {
+  pieces: Piece[];
+}
+
+const { pieces } = Astro.props;
+const href = (path: string) => (path.startsWith('https://') ? path : url(path));
+---
+{pieces.map((piece) => {
+  if (typeof piece === 'string') return piece;
+  if (isLink(piece)) {
+    return piece.email
+      ? <a href="#contact" data-mail={person.email.user} data-domain={person.email.domain}>{piece.text}</a>
+      : <a href={href(piece.href ?? '')}>{piece.text}</a>;
+  }
+  const phrase = <span class="phrase" data-phrase data-controls={`more-${piece.id}`}>{piece.text}</span>;
+  if (!Array.isArray(piece.more)) return phrase;
+  return <>{phrase}<span class="more" id={`more-${piece.id}`}>{' ('}<Astro.self pieces={piece.more} />{')'}</span></>;
+})}

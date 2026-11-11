@@ -1,0 +1,29 @@
+---
+import { lists } from '../data/projects';
+import { url } from '../lib/url';
+---
+<section class="work" id="work" aria-labelledby="work-title">
+  <div class="wrap">
+    <h2 class="work-title" id="work-title">Work</h2>
+    {lists.map((list) => (
+      <div class="work-group">
+        <h3 class="work-group-title">{list.title}</h3>
+        <ul class="work-list">
+          {list.projects.map((p) => (
+            <li class="work-item">
+              <div>
+                <h4 class="work-name">{p.writeup ? <a href={url(`work/${p.slug}/`)}>{p.name}</a> : p.name}</h4>
+                <p class="work-line">{p.line}</p>
+              </div>
+              <p class="work-meta">
+                <span class="work-result">{p.result}</span>
+                {p.when && <span>{p.when}</span>}
+                {p.links?.map((link) => <a href={link.url}>{link.label}</a>)}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,43 +1,37 @@
 ---
 import Base from '../layouts/Base.astro';
-import DoorDemo from '../components/DoorDemo.astro';
-import Hero from '../components/Hero.astro';
-import KitchenTab from '../components/KitchenTab.astro';
-import LazySusan from '../components/LazySusan.astro';
-import Menu from '../components/Menu.astro';
-import OrderPad from '../components/OrderPad.astro';
-import Phone from '../components/Phone.astro';
-import SignBar from '../components/SignBar.astro';
-import ThankYou from '../components/ThankYou.astro';
-import Wall from '../components/Wall.astro';
+import Footer from '../components/Footer.astro';
+import Sentence from '../components/Sentence.astro';
+import TopBar from '../components/TopBar.astro';
+import WorkList from '../components/WorkList.astro';
 import { person } from '../data/site';
-import '../styles/front.css';
+import { url } from '../lib/url';
+import '../styles/home.css';
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: person.name,
-  alumniOf: 'Georgia Institute of Technology',
+  url: new URL(url(), Astro.site).href,
+  affiliation: 'Georgia Institute of Technology',
   sameAs: [person.linkedin, person.github],
   knowsAbout: ['Backend systems', 'AI agents', 'Embedded systems'],
 };
 ---
 <Base
-  title="Kenney Chen: full stack since 2016"
-  description="Kenney Chen studies Computer Engineering at Georgia Tech and grew up working in his family's restaurant. His portfolio is that restaurant: a menu out front, and the engineering in the kitchen."
-  room="front"
+  title="Kenney Chen"
+  description="Kenney Chen studies computer engineering at Georgia Tech and is looking for a Summer 2027 software engineering internship. From an AI that answered a restaurant's phones to a map of every free curb in Atlanta."
 >
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
-  <SignBar room="front" />
+  <TopBar />
   <main id="main">
-    <Hero />
-    <Menu />
-    <DoorDemo />
-    <LazySusan />
-    <Wall />
-    <Phone />
-    <OrderPad />
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="wrap">
+        <h1 class="visually-hidden" id="intro-title">{person.name}</h1>
+        <Sentence />
+      </div>
+    </section>
+    <WorkList />
   </main>
-  <ThankYou />
-  <KitchenTab />
+  <Footer />
 </Base>

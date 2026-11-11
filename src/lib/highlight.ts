@@ -1,8 +1,8 @@
 import type { CodeLang } from '../data/types';
 
 /**
- * A two-color highlighter for the code printouts, like a kitchen impact printer with a red and
- * black ribbon. Keywords print red, comments print faded, and everything else stays black.
+ * A small highlighter for the code excerpts. Keywords are bold, comments are faint, and strings
+ * and numbers get one color. Everything else stays plain.
  */
 
 const KEYWORDS: Record<CodeLang, string[]> = {
@@ -60,7 +60,7 @@ export function highlight(code: string, lang: CodeLang): string {
 }
 
 /**
- * Highlights, then splits into lines for the green-bar printout. A span that runs across a
+ * Highlights, then splits into numbered lines for an excerpt. A span that runs across a
  * line break, like a Python docstring, is closed at the end of the line and reopened on the next.
  */
 export function highlightLines(code: string, lang: CodeLang): string[] {
