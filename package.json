@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Kenney Chen's portfolio, built as the restaurant he grew up in.",
+  "description": "Kenney Chen's portfolio: one paragraph that opens up.",
   "license": "MIT",
   "engines": {
     "node": ">=22.23"
@@ -19,12 +19,8 @@
     "ci": "npm run look && npm test && npm run build && npm run test:e2e"
   },
   "dependencies": {
-    "@fontsource/caprasimo": "5.3.0",
-    "@fontsource/league-gothic": "5.3.0",
-    "@fontsource/libre-franklin": "5.3.0",
-    "@fontsource/permanent-marker": "5.3.0",
-    "@fontsource/reenie-beanie": "5.3.0",
-    "@fontsource/vt323": "5.3.0",
+    "@fontsource-variable/familjen-grotesk": "5.3.0",
+    "@fontsource/source-code-pro": "5.3.1",
     "astro": "7.4.2"
   },
   "devDependencies": {

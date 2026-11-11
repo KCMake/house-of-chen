@@ -1,5 +1,3 @@
-import type { ComboId } from './types';
-
 export const person = {
   name: 'Kenney Chen',
   school: 'Georgia Tech',
@@ -7,95 +5,19 @@ export const person = {
   gpa: '4.00',
   graduation: 'May 2029',
   seeking: 'Looking for a software engineering internship, Summer 2027',
-  /** Lights the neon sign on the wall. */
-  open: true,
   location: 'Atlanta, Georgia',
-  // Split so the address isn't sitting in the HTML for scrapers. Pages assemble it in the browser.
+  // Split so the address isn't sitting in the HTML for scrapers. Pages put it together in the browser.
   email: { user: 'kchen755', domain: 'gatech.edu' },
   linkedin: 'https://www.linkedin.com/in/kenneychen/',
   github: 'https://github.com/KCMake',
   repo: 'https://github.com/KCMake/house-of-chen',
   resumePdf: 'kenney-chen-resume.pdf',
-  focus: 'Backend and distributed systems, AI, and embedded software',
-  languages: 'English (fluent) and Chinese (conversational)',
 };
 
 export const emailAddress = `${person.email.user}@${person.email.domain}`;
 export const emailSpoken = `${person.email.user} at ${person.email.domain.replace('.', ' dot ')}`;
 
-export const combos: { id: ComboId; label: string; note: string }[] = [
-  { id: 'c1', label: 'C1 Backend and AI', note: 'Circled: the dishes for backend and AI teams.' },
-  { id: 'c2', label: 'C2 Embedded and hardware', note: 'Circled: the dishes for embedded and hardware teams.' },
-  { id: 'c3', label: 'C3 Founder and people', note: 'Circled: the dishes for startups and anyone hiring for leadership.' },
-];
-
-/** The tear-off calendar on the wall. Zodiac characters are traditional; the family has the final say. */
-export const timeline = [
-  {
-    year: '2016',
-    animal: 'Monkey',
-    zodiac: '猴',
-    title: 'First shift',
-    text: "Started working at my family's restaurant, Hong Kong City. Over the years I've been a cook, a cashier, and a shift manager there.",
-  },
-  {
-    year: '2020',
-    animal: 'Rat',
-    zodiac: '鼠',
-    title: 'Delivery',
-    text: 'When delivery apps took off after COVID, I set up UberEats and DoorDash for my parents. Delivery orders grew 60% year over year.',
-  },
-  {
-    year: '2023',
-    animal: 'Rabbit',
-    zodiac: '兔',
-    title: 'BuildForge and a whistle',
-    text: 'Founded BuildForge, a community for student engineers that grew past 5,000 members. Started coaching youth basketball, and my 5th-grade team won back-to-back championships.',
-  },
-  {
-    year: '2024',
-    animal: 'Dragon',
-    zodiac: '龍',
-    title: 'CAD and code',
-    text: 'CAD and programming lead for VEX team 1961Z, a state qualifier and quarterfinalist.',
-  },
-  {
-    year: '2025',
-    animal: 'Snake',
-    zodiac: '蛇',
-    title: 'Nationals, then Tech',
-    text: 'AgriNexus 2.0 placed in the top five in Georgia and went to the TSA national conference in Nashville. Started Computer Engineering at Georgia Tech, then started building AI phone ordering for Osho in December.',
-  },
-  {
-    year: '2026',
-    animal: 'Horse',
-    zodiac: '馬',
-    title: 'Shipping',
-    text: 'Built Free Curb ATL, built Tuck solo at Cal Hacks 13.0, and co-founded Cogni.',
-  },
-];
-
-export const fortunes = [
-  'You will be asked to fix the printer. You will fix the printer.',
-  'A table full of wires is a happy place.',
-  'The dinner rush is the only load test that counts.',
-  'A system that fails loudly is a system you can trust.',
-  'An order is not done until it is in the bag.',
-  'Good fortune comes to those who hire interns early.',
-];
-
-export const lucky = ['4', '60', '173', '250', '2035', '5000'];
-
-export const learnChinese = { hanzi: '全棧', pinyin: 'quán zhàn', meaning: 'full stack' };
-
-/** Mise en place: what's on the shelves in the kitchen. */
-export const shelves = [
-  { name: 'Languages', items: ['Python', 'C and C++', 'Java', 'JavaScript', 'TypeScript', 'Swift', 'SQL', 'Bash'] },
-  { name: 'Line equipment', items: ['FastAPI', 'PostgreSQL', 'Redis', 'Docker', 'Linux', 'Git', 'GitHub Actions', 'MCP'] },
-  { name: 'Workshop', items: ['ESP32-S3', 'FreeRTOS', 'I2C and SPI', 'MOSFET drivers', 'Onshape CAD', '3D printing'] },
-];
-
-/** The one-page resume on the To go page. Same facts as the menu, in resume order. */
+/** The one-page resume. The same facts as the rest of the site, in resume order. */
 export const resume = {
   experience: [
     {

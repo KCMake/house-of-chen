@@ -1,23 +1,25 @@
 ---
 import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import TopBar from '../components/TopBar.astro';
 import { emailSpoken, person, resume } from '../data/site';
 import { url } from '../lib/url';
-import '../styles/togo.css';
+import '../styles/resume.css';
 ---
 <Base
   title="Kenney Chen: resume"
-  description="Kenney Chen's one-page resume. Computer Engineering at Georgia Tech, looking for a Summer 2027 software engineering internship."
-  room="plain"
+  description="Kenney Chen's one-page resume. Computer engineering at Georgia Tech, looking for a Summer 2027 software engineering internship."
 >
-  <div class="togo-page">
-    <div class="togo-bar">
-      <a href={url()}>Back to the restaurant</a>
-      <a class="key key-small" href={url(person.resumePdf)} download>Download the PDF</a>
+  <TopBar current="resume" />
+  <main id="main" class="wrap resume-page">
+    <div class="resume-bar">
+      <p>One page, with the same facts as the rest of the site.</p>
+      <a class="pdf-link" href={url(person.resumePdf)} download>Download the PDF</a>
     </div>
-    <main id="main" class="resume">
+    <div class="resume">
       <h1>{person.name}</h1>
       <p class="contact">
-        {person.location} | <a href="#" data-mail={person.email.user} data-domain={person.email.domain} data-show-address>{emailSpoken}</a> | <a href={person.linkedin}>linkedin.com/in/kenneychen</a> | <a href={person.github}>github.com/KCMake</a>
+        {person.location} | <a href="#contact" data-mail={person.email.user} data-domain={person.email.domain} data-show-address>{emailSpoken}</a> | <a href={person.linkedin}>linkedin.com/in/kenneychen</a> | <a href={person.github}>github.com/KCMake</a>
       </p>
       <p class="seeking">{person.seeking}.</p>
 
@@ -48,6 +50,7 @@ import '../styles/togo.css';
 
       <h2>Leadership and honors</h2>
       <ul>{resume.honors.map((h) => <li>{h}</li>)}</ul>
-    </main>
-  </div>
+    </div>
+  </main>
+  <Footer />
 </Base>

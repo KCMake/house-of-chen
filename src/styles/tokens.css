@@ -1,34 +1,33 @@
-/* Every color comes from an object in the restaurant. */
+/* Colors and type. Light by default, dark when the reader's system asks for it. */
 :root {
-  --check: #dfe9d5;       /* guest check paper */
-  --rule: #8fb09a;        /* the ruling printed on a guest check */
-  --check-ink: #2f5244;   /* small printed labels on the check */
-  --menu: #f0b92f;        /* goldenrod menu stock */
-  --red: #ab1018;         /* menu ink and serial-number red */
-  --red-deep: #7f0b12;
-  --ink: #16130e;         /* press black */
-  --pen: #1c3da3;         /* ballpoint */
-  --thermal: #f5f6f2;     /* receipt paper */
-  --steel: #b3babf;       /* kitchen stainless */
-  --steel-light: #d6dadd;
-  --steel-deep: #59616a;
-  --tape: #2a78bd;        /* painter's tape */
-  --cloth: #7b1418;       /* banquet tablecloth */
-  --kraft: #c9a678;       /* butcher paper */
-  --greenbar: #dcebd6;    /* continuous-form printer paper */
-  --jade: #1f5f4a;        /* the rim on the plates */
-  --phone: #e9dcc0;       /* the beige wall phone */
-  --wood: #6b4527;
-  --brass: #c9a24a;
-
-  --display: "League Gothic", "Arial Narrow", Impact, sans-serif;
-  --dish: "Caprasimo", "Cooper Black", Georgia, serif;
-  --body: "Libre Franklin", "Franklin Gothic Book", Arial, sans-serif;
-  --ticket: "VT323", "Courier New", monospace;
-  --hand: "Reenie Beanie", "Bradley Hand", cursive;
-  --marker: "Permanent Marker", "Marker Felt", cursive;
-  --hanzi: "Songti TC", "PingFang TC", "Noto Serif CJK TC", "Noto Sans CJK TC", serif;
-
-  --wrap: 1080px;
+  --paper: #ffffff;
+  --ink: #141414;
+  --soft: #5c5c56;
+  --faint: #6a6a64;
+  --line: #e2e2dc;
+  --code-bg: #f5f5f1;
+  --string: #6b5800;
+  --mark: #ffe45a;
+  --mark-open: #ffd226;
+  --focus: #1d4ed8;
+  --text: 'Familjen Grotesk Variable', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'Source Code Pro', ui-monospace, Menlo, Consolas, monospace;
+  --wrap: 1040px;
   color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #131312;
+    --ink: #edece6;
+    --soft: #a8a79f;
+    --faint: #8d8c85;
+    --line: #2e2e2b;
+    --code-bg: #1c1c1a;
+    --string: #e2c868;
+    --mark: rgb(255 214 64 / 0.34);
+    --mark-open: rgb(255 204 32 / 0.52);
+    --focus: #8ea9ff;
+    color-scheme: dark;
+  }
 }

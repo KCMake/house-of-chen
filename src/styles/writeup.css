@@ -1,0 +1,33 @@
+/* A write-up: the problem, the first try, what broke, and what shipped. */
+.writeup { padding-top: clamp(16px, 4vw, 48px); }
+.crumb { margin-bottom: 24px; color: var(--soft); font-size: 15px; }
+.w-title { font-size: clamp(38px, 4vw + 18px, 64px); line-height: 1.04; font-weight: 700; letter-spacing: -0.025em; }
+.w-lede { max-width: 36em; margin-top: 14px; font-size: clamp(19px, 1vw + 15px, 24px); line-height: 1.45; }
+.w-facts { display: flex; flex-wrap: wrap; gap: 14px 40px; margin: 28px 0 0; }
+.w-facts dt { color: var(--soft); font-size: 14px; }
+.w-facts dd { margin: 0; font-weight: 500; }
+.w-links { display: flex; flex-wrap: wrap; gap: 0 22px; margin-top: 14px; }
+.w-links a { padding-block: 8px; }
+
+.w-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); margin-top: 40px; border-top: 1px solid var(--ink); list-style: none; }
+.w-stats li { padding: 14px 20px 16px 0; border-bottom: 1px solid var(--line); }
+.w-stats b { display: block; font-size: 30px; line-height: 1.2; font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.w-stats span { color: var(--soft); font-size: 15px; }
+
+.w-section { max-width: 44em; margin-top: clamp(48px, 6vw, 72px); }
+.w-section h2 { margin-bottom: 14px; font-size: clamp(24px, 1.5vw + 16px, 30px); font-weight: 700; letter-spacing: -0.015em; }
+.w-section > p + p { margin-top: 1em; }
+/* Grid columns are minmax(0, 1fr) so a long code line scrolls inside its box instead of widening the page. */
+.w-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; list-style: none; }
+.w-fix { margin-top: 6px; color: var(--soft); }
+.w-fix b { color: var(--ink); }
+.w-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin-top: 24px; list-style: none; counter-reset: step; }
+.w-steps li { display: grid; grid-template-columns: 2.2em minmax(0, 1fr); counter-increment: step; }
+.w-steps li::before { content: counter(step); color: var(--faint); font: 400 14px/1.9 var(--mono); }
+.w-steps b { font-weight: 650; }
+.w-steps span { display: block; grid-column: 2; color: var(--soft); }
+.w-excerpts { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; margin-top: 36px; }
+.w-credit { margin-top: 28px; color: var(--soft); font-size: 15px; }
+
+.w-next { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 24px; margin-top: 72px; padding-top: 12px; border-top: 1px solid var(--line); }
+.w-next a { padding-block: 10px; }

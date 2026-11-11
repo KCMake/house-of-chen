@@ -1,0 +1,20 @@
+---
+import { person } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  current?: 'work' | 'resume';
+}
+
+const { current } = Astro.props;
+---
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a class="topbar-name" href={url()}>{person.name}</a>
+    <nav class="topbar-nav" aria-label="Site">
+      <a href={url('#work')} aria-current={current === 'work' ? 'page' : undefined}>Work</a>
+      <a href={url('resume/')} aria-current={current === 'resume' ? 'page' : undefined}>Resume</a>
+      <a href="#contact" data-mail={person.email.user} data-domain={person.email.domain}>Email</a>
+    </nav>
+  </div>
+</header>

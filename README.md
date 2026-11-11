@@ -1,28 +1,29 @@
-# House of Chen
+# Kenney Chen
 
-Kenney Chen's portfolio, built as the restaurant he grew up in. Live at [kcmake.github.io/house-of-chen](https://kcmake.github.io/house-of-chen/).
+My portfolio. It's live at [kcmake.github.io/house-of-chen](https://kcmake.github.io/house-of-chen/).
 
-I've worked front of house and back of house at my family's restaurant since 2016. In software, those are the frontend and the backend, so this site has both: a printed menu out front for anyone in a hurry, and a kitchen behind a swinging door for anyone who wants to see how things are made.
+The home page is one paragraph about me. Every highlighted phrase opens more of the story in place, and some of what opens has highlights of its own, down to the code. A recruiter can stop after the first read. An engineer can keep opening.
 
-![The front of house: a kitchen ticket hanging from a steel rail, next to the words Full stack since 2016](docs/front-of-house.png)
+![The home page: a short paragraph about Kenney with phrases highlighted in yellow](docs/home.png)
 
 ## What's on it
 
-- **The menu.** Every project, with the result printed where a menu prints the price. Combo platters circle what a backend, embedded, or founder-minded reader should look at. Type a number like `W1` to jump to that dish.
-- **The kitchen.** Each dish gets a ticket with its architecture, real code from its repo pinned to a commit, and a Refire log of what broke and how it got fixed.
-- **To go.** A plain one-page version that prints cleanly, and the PDF made from it.
-- **Things to touch.** A swinging door, a lazy Susan with real momentum, a ticket you can tear off, a tear-off calendar, a fortune cookie, a wall phone that parses your order, and an order pad that prints a ticket.
+- **The paragraph.** Who I am, what I've built, and the internship I'm looking for, with the details one tap away.
+- **Write-ups.** For the bigger projects: the problem, the first try, what broke, and what shipped, with real code pinned to a commit.
+- **Work.** Every project in one list, with the result next to each.
+- **Resume.** A plain page that prints cleanly, and the one-page PDF made from it.
 
-![The back of house: a kitchen ticket with code printed on green-bar paper](docs/back-of-house.png)
+![Two phrases opened: the map of free curbs, then how all 2,035 blocks were worked out](docs/home-open.png)
 
 ## How it works
 
-- `src/data/projects/` has one file per dish. Each feeds the menu, its kitchen ticket, the To go page, the PDF, and the phone, so they can't disagree.
-- `src/pages/` turns that data into static pages with Astro. JavaScript only runs where something moves.
-- `src/lib/physics.ts` holds the springs and friction behind the door, the table, and the handset. There's no animation library.
-- `src/lib/order.ts` is the phone: it matches what you say against the menu, works out what you want, validates the order, and answers. It's a small rule-based stand-in for the LLM agents I built for phone orders at Osho.
+- `src/data/sentence.ts` is the paragraph as data: plain text, highlighted phrases, and what each phrase opens. Tests check that every phrase opens to something and that the fully open paragraph still reads as clean sentences.
+- `src/data/projects/` has one file per project. The work list, the write-ups, and the resume read from the same files, so they can't disagree.
+- `src/scripts/sentence.ts` opens and closes phrases. Words slide from where they were to where they end up instead of jumping. They stay inline text and move with relative offsets, because an inline-block lets the browser wrap a lone comma onto the next line.
+- Everything is in the HTML from the start. Without JavaScript, every phrase is simply open.
 - `scripts/ai-look-check.mjs` fails the build when the code drifts toward the looks AI tools default to: stock typefaces, gradient headline text, blurred glass panels, purple palettes, and stock phrases.
-- Going between the front and the kitchen swings the whole page like a door, using cross-document view transitions in browsers that support them.
+
+![The Free Curb ATL write-up](docs/write-up.png)
 
 ## Run it
 
@@ -48,12 +49,9 @@ npm run build && npm run assets && npm run build
 
 It builds for GitHub Pages at `/house-of-chen/` by default. Set `SITE_URL` and `BASE_PATH` to build for another address, like a custom domain at `/`.
 
-## Still to come
+## History
 
-- The receipt font, made from a scan of the restaurant's own printer. VT323 stands in for now.
-- Photos of the real hardware plated on the restaurant's dishes. Drawings stand in for now.
-- Sound recorded at the restaurant. The current sounds are synthesized and off by default.
-- The order pad printing on a real receipt printer through an ESP32-S3. For now it opens an email.
+The first version of this site was built as my family's restaurant, with a menu, a swinging door to the kitchen, and a lazy Susan. It told a story, but a visitor had to learn the restaurant before learning anything about me, so this version keeps one idea. The restaurant is still in the git history.
 
 ## License
 

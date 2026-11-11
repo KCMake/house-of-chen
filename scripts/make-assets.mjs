@@ -16,7 +16,7 @@ const { server, origin } = await serve();
 const browser = await chromium.launch(process.env.CI ? {} : { channel: 'chrome' });
 try {
   const resume = await browser.newPage();
-  await resume.goto(`${origin}to-go/`, { waitUntil: 'networkidle' });
+  await resume.goto(`${origin}resume/`, { waitUntil: 'networkidle' });
   await resume.pdf({ path: 'public/kenney-chen-resume.pdf', format: 'Letter', printBackground: true, preferCSSPageSize: true });
 
   const og = await browser.newPage({ viewport: { width: 1200, height: 630 }, reducedMotion: 'reduce' });
@@ -26,13 +26,12 @@ try {
   await mkdir('docs', { recursive: true });
   const desk = await browser.newPage({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
   await desk.goto(origin, { waitUntil: 'networkidle' });
-  await desk.screenshot({ path: 'docs/front-of-house.png' });
-  await desk.goto(`${origin}kitchen/free-curb-atl/`, { waitUntil: 'networkidle' });
-  await desk.screenshot({ path: 'docs/back-of-house.png' });
-
-  const phone = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, reducedMotion: 'reduce' });
-  await phone.goto(origin, { waitUntil: 'networkidle' });
-  await phone.screenshot({ path: 'docs/phone.png' });
+  await desk.screenshot({ path: 'docs/home.png' });
+  await desk.getByRole('button', { name: 'a map of every free curb in Atlanta', exact: true }).click();
+  await desk.getByRole('button', { name: 'worked out all 2,035 blocks', exact: true }).click();
+  await desk.screenshot({ path: 'docs/home-open.png' });
+  await desk.goto(`${origin}work/free-curb-atl/`, { waitUntil: 'networkidle' });
+  await desk.screenshot({ path: 'docs/write-up.png' });
 } finally {
   await browser.close();
   server.close();

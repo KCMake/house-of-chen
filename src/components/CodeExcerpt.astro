@@ -1,0 +1,24 @@
+---
+import type { Excerpt } from '../data/types';
+import { dedent, highlightLines } from '../lib/highlight';
+
+interface Props {
+  excerpt: Excerpt;
+}
+
+const { excerpt } = Astro.props;
+const lines = highlightLines(dedent(excerpt.code), excerpt.lang);
+const end = excerpt.startLine + lines.length - 1;
+const range = lines.length === 1 ? `line ${excerpt.startLine}` : `lines ${excerpt.startLine} to ${end}`;
+---
+<figure class="excerpt">
+  <figcaption class="excerpt-head">
+    <span class="excerpt-file">{excerpt.file}</span>
+    <span>{range}</span>
+    <a href={excerpt.url}>View on GitHub</a>
+  </figcaption>
+  <div class="excerpt-code" tabindex="0" role="region" aria-label={`${excerpt.file}, ${range}`}>
+    <pre><code>{lines.map((line, i) => <span class="ln"><span class="no" aria-hidden="true">{excerpt.startLine + i}</span><span set:html={line || ' '} /></span>)}</code></pre>
+  </div>
+  <p class="excerpt-note">{excerpt.note}</p>
+</figure>

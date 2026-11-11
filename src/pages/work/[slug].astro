@@ -1,0 +1,83 @@
+---
+import Base from '../../layouts/Base.astro';
+import CodeExcerpt from '../../components/CodeExcerpt.astro';
+import Footer from '../../components/Footer.astro';
+import TopBar from '../../components/TopBar.astro';
+import { writeups } from '../../data/projects';
+import type { Project } from '../../data/types';
+import { url } from '../../lib/url';
+import '../../styles/writeup.css';
+
+export function getStaticPaths() {
+  return writeups.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+}
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+const w = project.writeup!;
+const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
+---
+<Base title={`${project.name}: how it works`} description={project.line}>
+  <TopBar current="work" />
+  <main id="main" class="writeup">
+    <article class="wrap">
+      <p class="crumb"><a href={url('#work')}>All work</a></p>
+      <header>
+        <h1 class="w-title">{project.name}</h1>
+        <p class="w-lede">{project.line}</p>
+        <dl class="w-facts">
+          {project.role && <div><dt>Role</dt><dd>{project.role}</dd></div>}
+          {project.when && <div><dt>When</dt><dd>{project.when}</dd></div>}
+          {project.stack.length > 0 && <div><dt>Built with</dt><dd>{project.stack.join(', ')}</dd></div>}
+        </dl>
+        {project.links && project.links.length > 0 && (
+          <p class="w-links">{project.links.map((link) => <a href={link.url}>{link.label}</a>)}</p>
+        )}
+      </header>
+
+      {w.stats && w.stats.length > 0 && (
+        <ul class="w-stats" aria-label="By the numbers">
+          {w.stats.map((s) => <li><b>{s.value}</b> <span>{s.label}</span></li>)}
+        </ul>
+      )}
+
+      <section class="w-section" aria-labelledby="problem">
+        <h2 id="problem">Problem</h2>
+        {w.problem.map((p) => <p>{p}</p>)}
+      </section>
+
+      {w.firstTry && (
+        <section class="w-section" aria-labelledby="first-try">
+          <h2 id="first-try">First try</h2>
+          <ul class="w-list">{w.firstTry.map((t) => <li><b>{t.what}.</b> {t.why}</li>)}</ul>
+        </section>
+      )}
+
+      {w.broke && (
+        <section class="w-section" aria-labelledby="what-broke">
+          <h2 id="what-broke">What broke</h2>
+          <ul class="w-list w-broke">
+            {w.broke.map((b) => <li><p>{b.what}</p><p class="w-fix"><b>Fix:</b> {b.fix}</p></li>)}
+          </ul>
+        </section>
+      )}
+
+      <section class="w-section" aria-labelledby="what-shipped">
+        <h2 id="what-shipped">What shipped</h2>
+        {w.shipped.map((p) => <p>{p}</p>)}
+        <ol class="w-steps">{w.steps.map((s) => <li><b>{s.name}</b> <span>{s.detail}</span></li>)}</ol>
+        {w.excerpts && <div class="w-excerpts">{w.excerpts.map((e) => <CodeExcerpt excerpt={e} />)}</div>}
+        {w.credit && <p class="w-credit">{w.credit}</p>}
+      </section>
+
+      <nav class="w-next" aria-label="More write-ups">
+        <a href={url(`work/${next.slug}/`)}>Next: {next.name}</a>
+        <a href={url('#work')}>All work</a>
+      </nav>
+    </article>
+  </main>
+  <Footer />
+</Base>
