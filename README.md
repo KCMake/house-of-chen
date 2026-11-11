@@ -1,6 +1,6 @@
 # House of Chen
 
-Kenney Chen's portfolio, built as the restaurant he grew up in.
+Kenney Chen's portfolio, built as the restaurant he grew up in. Live at [kcmake.github.io/house-of-chen](https://kcmake.github.io/house-of-chen/).
 
 I've worked front of house and back of house at my family's restaurant since 2016. In software, those are the frontend and the backend, so this site has both: a printed menu out front for anyone in a hurry, and a kitchen behind a swinging door for anyone who wants to see how things are made.
 
