@@ -1,94 +1,68 @@
-/** Where a dish sits on the menu. `house` tickets only exist in the kitchen. */
-export type Section = 'specials' | 'workshop' | 'plates' | 'family' | 'house';
-
-/** Combo platters: C1 backend and AI, C2 embedded and hardware, C3 founder and people. */
-export type ComboId = 'c1' | 'c2' | 'c3';
-
-/** Condiment packets. Soy for languages, chili for frameworks and services, salt for hardware and people. */
-export type PacketKind = 'soy' | 'chili' | 'salt';
-
-/** Stand-in drawings on the lazy Susan until the real dishes are photographed. */
-export type PlateArt = 'phone' | 'map' | 'board' | 'steamer' | 'moon' | 'storefront';
-
 export type CodeLang = 'python' | 'swift' | 'ts';
-
-export interface Packet {
-  name: string;
-  kind: PacketKind;
-}
 
 export interface Link {
   label: string;
   url: string;
 }
 
-/** One step on the line: how an order moves through the system. */
-export interface Step {
-  step: string;
-  detail?: string;
-}
-
-/** A real excerpt from a repo, pinned to a commit so it can't drift. */
-export interface Printout {
+/** A few lines of real code, quoted exactly and linked to those lines on GitHub. */
+export interface Excerpt {
   file: string;
   lang: CodeLang;
+  /** Pinned to a commit for other repos. This repo's own code links to main, and a test checks the quote. */
   url: string;
   startLine: number;
+  /** Why these lines matter, in a sentence or two. */
   note: string;
   code: string;
 }
 
-/** Something that went wrong, and how it got fixed. */
-export interface Refire {
-  sentBack: string;
-  fixed: string;
+/** One stage of how something works. */
+export interface Step {
+  name: string;
+  detail: string;
 }
 
-/** An idea that got cut, and why. */
-export interface Cut {
-  what: string;
-  why: string;
-}
-
-export interface Tally {
+export interface Stat {
   value: string;
   label: string;
 }
 
-/** The back-of-house ticket for a dish. */
-export interface Kitchen {
-  order: string[];
-  line: Step[];
-  printouts?: Printout[];
-  refires?: Refire[];
-  cut?: Cut[];
-  tally?: Tally[];
+/** Something tried first and dropped. */
+export interface Attempt {
+  what: string;
+  why: string;
+}
+
+/** Something that went wrong, and how it got fixed. */
+export interface Failure {
+  what: string;
+  fix: string;
+}
+
+/** The long version of a project, in the order an engineer would ask about it. */
+export interface Writeup {
+  problem: string[];
+  firstTry?: Attempt[];
+  broke?: Failure[];
+  shipped: string[];
+  /** How the shipped version works, in order. */
+  steps: Step[];
+  excerpts?: Excerpt[];
+  stats?: Stat[];
   credit?: string;
 }
 
 export interface Project {
   slug: string;
-  /** Menu number, like S2. The letter matches the section. */
-  number: string;
-  section: Section;
   name: string;
-  /** One or two sentences for the menu. */
-  short: string;
-  /** Printed where a menu prints the price. */
+  /** One plain sentence for the work list. */
+  line: string;
+  /** The number or outcome worth noticing. */
   result: string;
-  /** How hard it really was, 0 to 3 chilies. */
-  spice: 0 | 1 | 2 | 3;
-  combos: ComboId[];
-  stack: Packet[];
   role?: string;
   when?: string;
-  /** Words the phone listens for. */
-  aliases: string[];
+  stack: string[];
   links?: Link[];
-  isNew?: boolean;
-  /** False for kitchen-only tickets. */
-  onMenu?: boolean;
-  /** Seat on the lazy Susan, 0 to 5. */
-  plate?: { art: PlateArt; seat: number };
-  kitchen?: Kitchen;
+  writeup?: Writeup;
 }

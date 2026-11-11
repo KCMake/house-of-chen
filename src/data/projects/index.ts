@@ -1,35 +1,28 @@
-import type { Project, Section } from '../types';
+import type { Project } from '../types';
 
 const modules = import.meta.glob<{ default: Project }>(['./*.ts', '!./index.ts'], { eager: true });
 
-export const sections: { id: Exclude<Section, 'house'>; title: string; prefix: string }[] = [
-  { id: 'specials', title: "Chef's specials", prefix: 'S' },
-  { id: 'workshop', title: 'From the workshop', prefix: 'W' },
-  { id: 'plates', title: 'Small plates', prefix: 'P' },
-  { id: 'family', title: 'Family style', prefix: 'F' },
+export const allProjects: Project[] = Object.values(modules).map((m) => m.default);
+
+export function bySlug(slug: string): Project {
+  const project = allProjects.find((p) => p.slug === slug);
+  if (!project) throw new Error(`There is no project called ${slug}.`);
+  return project;
+}
+
+/** The two lists on the home page, in the order worth reading. */
+export const lists = [
+  {
+    id: 'projects',
+    title: 'Projects',
+    projects: ['ai-phone-ordering', 'free-curb-atl', 'cogni', 'tuck', 'agrinexus', 'opening-day', 'quill', 'coursesniper', 'itrade', 'portify', 'vex-1961z'].map(bySlug),
+  },
+  {
+    id: 'leadership',
+    title: 'Leadership',
+    projects: ['buildforge', 'hong-kong-city', 'basketball', 'pep-georgia', 'basement-robotics'].map(bySlug),
+  },
 ];
 
-const ORDER: Section[] = ['specials', 'workshop', 'plates', 'family', 'house'];
-
-function byNumber(a: Project, b: Project): number {
-  return ORDER.indexOf(a.section) - ORDER.indexOf(b.section) || Number(a.number.slice(1)) - Number(b.number.slice(1));
-}
-
-export const allProjects: Project[] = Object.values(modules)
-  .map((m) => m.default)
-  .sort(byNumber);
-
-/** Everything printed on the front-of-house menu. */
-export const menu = allProjects.filter((p) => p.onMenu !== false);
-
-/** Dishes with a back-of-house ticket. */
-export const kitchenTickets = allProjects.filter((p) => p.kitchen);
-
-/** The six dishes on the lazy Susan, in seat order. */
-export const tableDishes = menu
-  .filter((p) => p.plate)
-  .sort((a, b) => (a.plate?.seat ?? 0) - (b.plate?.seat ?? 0));
-
-export function bySlug(slug: string): Project | undefined {
-  return allProjects.find((p) => p.slug === slug);
-}
+/** Every project with a write-up, in list order, then this site. Each gets a page at /work/<slug>/. */
+export const writeups: Project[] = [...lists.flatMap((list) => list.projects), bySlug('this-site')].filter((p) => p.writeup);

@@ -4,37 +4,29 @@ const COMMIT = 'https://github.com/KCMake/tuck/blob/95af3a42f86360676e59cbfb7fe5
 
 const project: Project = {
   slug: 'tuck',
-  number: 'P3',
-  section: 'plates',
   name: 'Tuck',
-  short: "A parent's voice at bedtime, even when they can't be there. Built solo at Cal Hacks 13.0.",
+  line: "A parent's voice at bedtime, even when they can't be there. Built solo at Cal Hacks 13.0.",
   result: 'solo at Cal Hacks',
-  spice: 2,
-  combos: ['c1'],
-  stack: [
-    { name: 'TypeScript', kind: 'soy' },
-    { name: 'Cartesia', kind: 'chili' },
-    { name: 'Claude', kind: 'chili' },
-    { name: 'Express', kind: 'chili' },
-  ],
-  aliases: ['tuck', 'bedtime', 'bedtime story', 'cal hacks', 'voice clone', 'cartesia'],
+  when: '2026',
+  stack: ['TypeScript', 'Cartesia', 'Claude', 'Express'],
   links: [{ label: 'Code on GitHub', url: 'https://github.com/KCMake/tuck' }],
-  plate: { art: 'moon', seat: 4 },
-  kitchen: {
-    order: [
+  writeup: {
+    problem: [
       "Some parents miss bedtime on a regular schedule: night-shift nurses, first responders, parents who travel, deployed service members. For a toddler, a parent's voice is part of what makes falling asleep feel safe.",
+    ],
+    shipped: [
       'A parent records their voice once, starting with a consent sentence. Each night they spend about 20 seconds on the details, like the comfort toy and one happy moment from the day. Claude writes a calm story, the parent approves every word, and Tuck records it in their voice.',
       "It doesn't replace a parent who is home, and a caregiver is always in the room.",
     ],
-    line: [
-      { step: 'Voice, recorded once', detail: '20 to 60 seconds, starting with a consent sentence. Cartesia makes a private clone.' },
-      { step: "Tonight's details", detail: 'The comfort toy, one happy moment, and the usual goodnight words.' },
-      { step: 'Claude writes the story', detail: 'Structured output through a Zod schema. Every paragraph is tagged hello, adventure, wind-down, or goodnight, with a scene.' },
-      { step: 'The parent approves it', detail: 'They can change any word or picture first.' },
-      { step: 'Cartesia records it', detail: 'One request per paragraph. Speed eases from 1.0 to 0.7 and volume from 1.0 to 0.6 across the story.' },
-      { step: 'Kid mode', detail: 'One tap plays it, offline. The screen dims to a nightlight and brown noise fades out over ten minutes.' },
+    steps: [
+      { name: 'Voice, recorded once', detail: '20 to 60 seconds, starting with a consent sentence. Cartesia makes a private clone.' },
+      { name: "Tonight's details", detail: 'The comfort toy, one happy moment, and the usual goodnight words.' },
+      { name: 'Claude writes the story', detail: 'Structured output through a Zod schema. Every paragraph is tagged hello, adventure, wind-down, or goodnight, with a scene.' },
+      { name: 'The parent approves it', detail: 'They can change any word or picture first.' },
+      { name: 'Cartesia records it', detail: 'One request per paragraph. Speed eases from 1.0 to 0.7 and volume from 1.0 to 0.6 across the story.' },
+      { name: 'Kid mode', detail: 'One tap plays it, offline. The screen dims to a nightlight and brown noise fades out over ten minutes.' },
     ],
-    printouts: [
+    excerpts: [
       {
         file: 'shared/pacing.ts',
         lang: 'ts',
@@ -69,7 +61,7 @@ const project: Project = {
         ].join('\n'),
       },
     ],
-    tally: [
+    stats: [
       { value: '20 s', label: 'of setup a night' },
       { value: '0.7x', label: 'speed by the last paragraph' },
       { value: '10 min', label: 'of brown noise fading out' },
