@@ -1,0 +1,24 @@
+---
+import type { Diagram } from '../data/types';
+
+// A block diagram made of real text, so it stays readable on a phone, where the columns stack
+// and the arrows turn to point down.
+interface Props {
+  diagram: Diagram;
+}
+
+const { diagram } = Astro.props;
+---
+<figure class="bd">
+  <div class="bd-cols" style={`--cols: ${diagram.columns.length}`}>
+    {diagram.columns.map((column) => (
+      <section class="bd-col">
+        <h3>{column.title}</h3>
+        <ul>
+          {column.blocks.map((block) => <li><b>{block.name}</b><span>{block.detail}</span></li>)}
+        </ul>
+      </section>
+    ))}
+  </div>
+  <figcaption>{diagram.caption}</figcaption>
+</figure>

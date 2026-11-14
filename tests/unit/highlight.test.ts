@@ -23,6 +23,13 @@ describe('highlight', () => {
   });
 });
 
+describe('C++', () => {
+  it('marks types and control words, and leaves a preprocessor line alone', () => {
+    expect(highlight('float result = bias;', 'cpp')).toBe('<span class="k">float</span> result = bias;');
+    expect(highlight('#include "model_weights.h"', 'cpp')).toBe('#include <span class="s">"model_weights.h"</span>');
+  });
+});
+
 describe('highlightLines', () => {
   it('closes and reopens a docstring on every line it spans', () => {
     const lines = highlightLines('def f():\n    """one\n    two"""\n    return 1', 'python');

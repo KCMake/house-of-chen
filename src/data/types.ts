@@ -1,4 +1,4 @@
-export type CodeLang = 'python' | 'swift' | 'ts';
+export type CodeLang = 'python' | 'swift' | 'ts' | 'cpp';
 
 export interface Link {
   label: string;
@@ -15,6 +15,46 @@ export interface Excerpt {
   /** Why these lines matter, in a sentence or two. */
   note: string;
   code: string;
+}
+
+/** A short piece of code shown in full, for projects whose source isn't public to link to. */
+export interface Listing {
+  file: string;
+  lang: CodeLang;
+  note: string;
+  code: string;
+}
+
+/** A photo, drawing, or chart. Files live under public/, and `src` is the path from there. */
+export interface Figure {
+  src: string;
+  /** What the picture shows, for someone who can't see it. */
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+  /** A drawing or chart on a white background, which keeps that background in dark mode. */
+  paper?: boolean;
+}
+
+/** A small table of facts, like pin assignments or a parts list. */
+export interface Spec {
+  title: string;
+  rows: [string, string][];
+  /** Starts closed, for long tables most readers will skip. */
+  folded?: boolean;
+}
+
+/** One box in a block diagram. */
+export interface Block {
+  name: string;
+  detail: string;
+}
+
+/** A block diagram read left to right: each column feeds the next. */
+export interface Diagram {
+  caption: string;
+  columns: { title: string; blocks: Block[] }[];
 }
 
 /** One stage of how something works. */
@@ -38,6 +78,7 @@ export interface Attempt {
 export interface Failure {
   what: string;
   fix: string;
+  figure?: Figure;
 }
 
 /** The long version of a project, in the order an engineer would ask about it. */
@@ -50,6 +91,15 @@ export interface Writeup {
   steps: Step[];
   excerpts?: Excerpt[];
   stats?: Stat[];
+  /** The picture under the title. */
+  hero?: Figure;
+  /** Pictures for the first-try and what-shipped sections. */
+  figures?: { firstTry?: Figure[]; shipped?: Figure[]; tested?: Figure[] };
+  diagram?: Diagram;
+  specs?: Spec[];
+  listings?: Listing[];
+  /** How it was tested and what the tests showed. Gets its own section after What shipped. */
+  tested?: string[];
   credit?: string;
 }
 
