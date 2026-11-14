@@ -1,0 +1,11 @@
+---
+import { art, plainMark } from '../art';
+
+// A project's drawing. Decorative: the project's name is always right beside it.
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+---
+<svg class="art" viewBox="0 0 96 64" aria-hidden="true" focusable="false" set:html={art[slug] ?? plainMark} />

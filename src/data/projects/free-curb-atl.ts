@@ -7,6 +7,10 @@ const project: Project = {
   name: 'Free Curb ATL',
   line: 'A map of which Atlanta curbs are free at any day and hour, worked out block by block.',
   result: '2,035 blocks',
+  group: 'projects',
+  order: 20,
+  tags: ['Web'],
+  demo: 'curb',
   when: '2026',
   stack: ['Python', 'JavaScript', 'Leaflet', 'GitHub Actions'],
   links: [

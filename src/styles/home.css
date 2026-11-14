@@ -30,15 +30,25 @@
 
 /* The work list */
 .work { padding-top: clamp(64px, 10vw, 120px); }
+.work-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 32px; }
 .work-title { font-size: clamp(30px, 2vw + 20px, 44px); font-weight: 700; letter-spacing: -0.02em; }
+.work-filter { display: none; }
+.work-filter.is-ready { display: flex; flex-wrap: wrap; gap: 6px; }
+.work-filter button { min-height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--ink); font: 600 15px/1 var(--text); cursor: pointer; transition-property: background-color, color, border-color; transition-duration: 0.12s; transition-timing-function: ease-out; }
+.work-filter button:hover { border-color: var(--ink); }
+.work-filter button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--paper); }
 .work-group { margin-top: 32px; }
+.work-group[hidden], .work-item[hidden] { display: none; }
 .work-group-title { padding-bottom: 10px; border-bottom: 1px solid var(--ink); color: var(--soft); font-size: 15px; font-weight: 600; }
 .work-list { list-style: none; }
-.work-item { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 16em); gap: 6px 40px; padding-block: 18px; border-bottom: 1px solid var(--line); }
+.work-item { display: grid; grid-template-columns: 96px minmax(0, 1fr) minmax(0, 14em); gap: 6px 28px; align-items: start; padding-block: 18px; border-bottom: 1px solid var(--line); }
 .work-name { font-size: 20px; font-weight: 650; line-height: 1.3; letter-spacing: -0.01em; }
+.work-runs { margin-left: 10px; padding: 2px 7px; border-radius: 3px; background: var(--mark); font: 400 12.5px/1.6 var(--mono); letter-spacing: 0; white-space: nowrap; vertical-align: 2px; }
 .work-line { max-width: 62ch; margin-top: 4px; color: var(--soft); }
 .work-meta { display: flex; flex-wrap: wrap; align-content: start; gap: 2px 16px; color: var(--soft); font-size: 15px; }
 .work-result { color: var(--ink); font: 400 14px/1.75 var(--mono); }
 @media (max-width: 700px) {
-  .work-item { grid-template-columns: minmax(0, 1fr); }
+  .work-item { grid-template-columns: 64px minmax(0, 1fr); gap: 6px 16px; }
+  .work-meta { grid-column: 2; }
 }
+.about-title { margin-bottom: 18px; color: var(--soft); font-size: 15px; font-weight: 600; }
