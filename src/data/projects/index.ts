@@ -10,19 +10,13 @@ export function bySlug(slug: string): Project {
   return project;
 }
 
-/** The two lists on the home page, in the order worth reading. */
+const inGroup = (group: Project['group']) => allProjects.filter((p) => p.group === group).sort((a, b) => a.order - b.order);
+
+/** The two lists on the home page. A project picks its list with `group` and its place with `order`. */
 export const lists = [
-  {
-    id: 'projects',
-    title: 'Projects',
-    projects: ['ai-phone-ordering', 'free-curb-atl', 'cogni', 'tuck', 'agrinexus', 'opening-day', 'quill', 'coursesniper', 'itrade', 'portify', 'vex-1961z'].map(bySlug),
-  },
-  {
-    id: 'leadership',
-    title: 'Leadership',
-    projects: ['buildforge', 'hong-kong-city', 'basketball', 'pep-georgia', 'basement-robotics'].map(bySlug),
-  },
+  { id: 'projects', title: 'Projects', projects: inGroup('projects') },
+  { id: 'leadership', title: 'Leadership', projects: inGroup('leadership') },
 ];
 
 /** Every project with a write-up, in list order, then this site. Each gets a page at /work/<slug>/. */
-export const writeups: Project[] = [...lists.flatMap((list) => list.projects), bySlug('this-site')].filter((p) => p.writeup);
+export const writeups: Project[] = [...lists.flatMap((list) => list.projects), ...inGroup('site')].filter((p) => p.writeup);

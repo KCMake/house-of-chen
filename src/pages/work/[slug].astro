@@ -1,12 +1,15 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Art from '../../components/Art.astro';
 import CodeExcerpt from '../../components/CodeExcerpt.astro';
+import Demo from '../../components/Demo.astro';
 import Footer from '../../components/Footer.astro';
 import TopBar from '../../components/TopBar.astro';
 import { writeups } from '../../data/projects';
 import type { Project } from '../../data/types';
 import { url } from '../../lib/url';
 import '../../styles/writeup.css';
+import '../../styles/demo.css';
 
 export function getStaticPaths() {
   return writeups.map((project) => ({ params: { slug: project.slug }, props: { project } }));
@@ -26,6 +29,7 @@ const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
     <article class="wrap">
       <p class="crumb"><a href={url('#work')}>All work</a></p>
       <header>
+        <Art slug={project.slug} />
         <h1 class="w-title">{project.name}</h1>
         <p class="w-lede">{project.line}</p>
         <dl class="w-facts">
@@ -37,6 +41,8 @@ const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
           <p class="w-links">{project.links.map((link) => <a href={link.url}>{link.label}</a>)}</p>
         )}
       </header>
+
+      {project.demo && <Demo demo={project.demo} />}
 
       {w.stats && w.stats.length > 0 && (
         <ul class="w-stats" aria-label="By the numbers">

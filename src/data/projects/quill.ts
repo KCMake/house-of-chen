@@ -7,6 +7,9 @@ const project: Project = {
   name: 'Quill',
   line: 'Turns a MacBook trackpad into a drawing tablet, so you can handwrite notes and math.',
   result: 'native macOS',
+  group: 'projects',
+  order: 70,
+  tags: ['Tools'],
   stack: ['Swift', 'MultitouchSupport', 'Core Graphics'],
   links: [{ label: 'Code on GitHub', url: 'https://github.com/KCMake/quill' }],
   writeup: {

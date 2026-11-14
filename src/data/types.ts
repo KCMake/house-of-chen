@@ -53,6 +53,9 @@ export interface Writeup {
   credit?: string;
 }
 
+export const TAGS = ['AI', 'Web', 'Tools', 'Hardware', 'Leadership'] as const;
+export type Tag = (typeof TAGS)[number];
+
 export interface Project {
   slug: string;
   name: string;
@@ -60,6 +63,14 @@ export interface Project {
   line: string;
   /** The number or outcome worth noticing. */
   result: string;
+  /** Which list on the home page it goes in. 'site' is this site, which only the footer links to. */
+  group: 'projects' | 'leadership' | 'site';
+  /** Position in its list, lowest first. Leave gaps so a new project fits between two others. */
+  order: number;
+  /** What the Work filter matches. */
+  tags: Tag[];
+  /** A piece of the project that runs at the top of its write-up. See src/components/Demo.astro. */
+  demo?: 'curb' | 'sniper';
   role?: string;
   when?: string;
   stack: string[];

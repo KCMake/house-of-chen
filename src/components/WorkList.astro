@@ -1,18 +1,33 @@
 ---
+import Art from './Art.astro';
 import { lists } from '../data/projects';
+import { TAGS } from '../data/types';
 import { url } from '../lib/url';
+
+const used = TAGS.filter((tag) => lists.some((list) => list.projects.some((p) => p.tags.includes(tag))));
 ---
 <section class="work" id="work" aria-labelledby="work-title">
   <div class="wrap">
-    <h2 class="work-title" id="work-title">Work</h2>
+    <div class="work-head">
+      <h2 class="work-title" id="work-title">Work</h2>
+      <p class="work-filter" data-work-filter>
+        <span class="visually-hidden">Show:</span>
+        <button type="button" data-tag="" aria-pressed="true">All</button>
+        {used.map((tag) => <button type="button" data-tag={tag} aria-pressed="false">{tag}</button>)}
+      </p>
+    </div>
     {lists.map((list) => (
-      <div class="work-group">
+      <div class="work-group" data-work-group>
         <h3 class="work-group-title">{list.title}</h3>
         <ul class="work-list">
           {list.projects.map((p) => (
-            <li class="work-item">
+            <li class="work-item" data-tags={p.tags.join(' ')}>
+              <Art slug={p.slug} />
               <div>
-                <h4 class="work-name">{p.writeup ? <a href={url(`work/${p.slug}/`)}>{p.name}</a> : p.name}</h4>
+                <h4 class="work-name">
+                  {p.writeup ? <a href={url(`work/${p.slug}/`)}>{p.name}</a> : p.name}
+                  {p.demo && <span class="work-runs">runs in the page</span>}
+                </h4>
                 <p class="work-line">{p.line}</p>
               </div>
               <p class="work-meta">
@@ -25,5 +40,31 @@ import { url } from '../lib/url';
         </ul>
       </div>
     ))}
+    <p class="work-none" data-work-none hidden>Nothing here yet.</p>
   </div>
 </section>
+
+<script>
+  // The filter hides rows that lack the chosen tag. Without JavaScript, everything stays listed.
+  const bar = document.querySelector<HTMLElement>('[data-work-filter]');
+  if (bar) {
+    const buttons = [...bar.querySelectorAll<HTMLButtonElement>('button')];
+    const groups = [...document.querySelectorAll<HTMLElement>('[data-work-group]')];
+    bar.classList.add('is-ready');
+    bar.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest('button');
+      if (!button) return;
+      const tag = button.dataset.tag ?? '';
+      for (const b of buttons) b.setAttribute('aria-pressed', String(b === button));
+      for (const group of groups) {
+        let shown = 0;
+        for (const item of group.querySelectorAll<HTMLElement>('[data-tags]')) {
+          const match = tag === '' || (item.dataset.tags ?? '').split(' ').includes(tag);
+          item.hidden = !match;
+          if (match) shown += 1;
+        }
+        group.hidden = shown === 0;
+      }
+    });
+  }
+</script>
