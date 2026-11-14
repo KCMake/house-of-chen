@@ -1,12 +1,19 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Art from '../../components/Art.astro';
+import BlockDiagram from '../../components/BlockDiagram.astro';
 import CodeExcerpt from '../../components/CodeExcerpt.astro';
+import Demo from '../../components/Demo.astro';
+import Figure from '../../components/Figure.astro';
+import Listing from '../../components/Listing.astro';
+import SpecTable from '../../components/SpecTable.astro';
 import Footer from '../../components/Footer.astro';
 import TopBar from '../../components/TopBar.astro';
 import { writeups } from '../../data/projects';
 import type { Project } from '../../data/types';
 import { url } from '../../lib/url';
 import '../../styles/writeup.css';
+import '../../styles/demo.css';
 
 export function getStaticPaths() {
   return writeups.map((project) => ({ params: { slug: project.slug }, props: { project } }));
@@ -18,6 +25,7 @@ interface Props {
 
 const { project } = Astro.props;
 const w = project.writeup!;
+const wide = Boolean(w.diagram || w.specs || w.figures?.shipped);
 const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
 ---
 <Base title={`${project.name}: how it works`} description={project.line}>
@@ -25,7 +33,9 @@ const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
   <main id="main" class="writeup">
     <article class="wrap">
       <p class="crumb"><a href={url('#work')}>All work</a></p>
-      <header>
+      <header class:list={['w-head', { 'has-hero': w.hero }]}>
+        <div>
+        <Art slug={project.slug} />
         <h1 class="w-title">{project.name}</h1>
         <p class="w-lede">{project.line}</p>
         <dl class="w-facts">
@@ -36,7 +46,11 @@ const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
         {project.links && project.links.length > 0 && (
           <p class="w-links">{project.links.map((link) => <a href={link.url}>{link.label}</a>)}</p>
         )}
+        </div>
+        {w.hero && <Figure figure={w.hero} eager />}
       </header>
+
+      {project.demo && <Demo demo={project.demo} />}
 
       {w.stats && w.stats.length > 0 && (
         <ul class="w-stats" aria-label="By the numbers">
@@ -53,6 +67,7 @@ const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
         <section class="w-section" aria-labelledby="first-try">
           <h2 id="first-try">First try</h2>
           <ul class="w-list">{w.firstTry.map((t) => <li><b>{t.what}.</b> {t.why}</li>)}</ul>
+          {w.figures?.firstTry && <div class="w-figs">{w.figures.firstTry.map((f) => <Figure figure={f} />)}</div>}
         </section>
       )}
 
@@ -60,18 +75,35 @@ const next = writeups[(writeups.indexOf(project) + 1) % writeups.length];
         <section class="w-section" aria-labelledby="what-broke">
           <h2 id="what-broke">What broke</h2>
           <ul class="w-list w-broke">
-            {w.broke.map((b) => <li><p>{b.what}</p><p class="w-fix"><b>Fix:</b> {b.fix}</p></li>)}
+            {w.broke.map((b) => <li><p>{b.what}</p><p class="w-fix"><b>Fix:</b> {b.fix}</p>{b.figure && <Figure figure={b.figure} />}</li>)}
           </ul>
         </section>
       )}
 
-      <section class="w-section" aria-labelledby="what-shipped">
+      <section class:list={['w-section', { 'is-wide': wide }]} aria-labelledby="what-shipped">
         <h2 id="what-shipped">What shipped</h2>
         {w.shipped.map((p) => <p>{p}</p>)}
+        {w.diagram && <BlockDiagram diagram={w.diagram} />}
         <ol class="w-steps">{w.steps.map((s) => <li><b>{s.name}</b> <span>{s.detail}</span></li>)}</ol>
-        {w.excerpts && <div class="w-excerpts">{w.excerpts.map((e) => <CodeExcerpt excerpt={e} />)}</div>}
-        {w.credit && <p class="w-credit">{w.credit}</p>}
+        {w.specs && <div class="w-specs">{w.specs.map((spec) => <SpecTable spec={spec} />)}</div>}
+        {w.figures?.shipped && <div class="w-figs">{w.figures.shipped.map((f) => <Figure figure={f} />)}</div>}
+        {(w.excerpts || w.listings) && (
+          <div class="w-excerpts">
+            {w.excerpts?.map((e) => <CodeExcerpt excerpt={e} />)}
+            {w.listings?.map((l) => <Listing listing={l} />)}
+          </div>
+        )}
+        {!w.tested && w.credit && <p class="w-credit">{w.credit}</p>}
       </section>
+
+      {w.tested && (
+        <section class:list={['w-section', { 'is-wide': w.figures?.tested }]} aria-labelledby="tested">
+          <h2 id="tested">How it was tested</h2>
+          {w.tested.map((p) => <p>{p}</p>)}
+          {w.figures?.tested && <div class="w-figs">{w.figures.tested.map((f) => <Figure figure={f} />)}</div>}
+          {w.credit && <p class="w-credit">{w.credit}</p>}
+        </section>
+      )}
 
       <nav class="w-next" aria-label="More write-ups">
         <a href={url(`work/${next.slug}/`)}>Next: {next.name}</a>

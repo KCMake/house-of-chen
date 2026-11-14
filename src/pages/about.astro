@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import Footer from '../components/Footer.astro';
+import Sentence from '../components/Sentence.astro';
+import TopBar from '../components/TopBar.astro';
+import '../styles/home.css';
+---
+<Base
+  title="About Kenney Chen"
+  description="Who Kenney Chen is and what he has built, as one paragraph whose highlighted phrases open in place."
+>
+  <TopBar current="about" />
+  <main id="main">
+    <section class="intro" aria-labelledby="about-title">
+      <div class="wrap">
+        <h1 class="about-title" id="about-title">About</h1>
+        <Sentence />
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

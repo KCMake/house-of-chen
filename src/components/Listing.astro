@@ -1,0 +1,20 @@
+---
+import type { Listing } from '../data/types';
+import { dedent, highlightLines } from '../lib/highlight';
+
+// Code shown in full, for a project whose source isn't public. An excerpt with a GitHub link
+// uses CodeExcerpt instead.
+interface Props {
+  listing: Listing;
+}
+
+const { listing } = Astro.props;
+const lines = highlightLines(dedent(listing.code), listing.lang);
+---
+<figure class="excerpt">
+  <figcaption class="excerpt-head"><span class="excerpt-file">{listing.file}</span></figcaption>
+  <div class="excerpt-code" tabindex="0" role="region" aria-label={listing.file}>
+    <pre><code>{lines.map((line, i) => <span class="ln"><span class="no" aria-hidden="true">{i + 1}</span><span set:html={line || ' '} /></span>)}</code></pre>
+  </div>
+  <p class="excerpt-note">{listing.note}</p>
+</figure>

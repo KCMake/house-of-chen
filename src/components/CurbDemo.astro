@@ -1,0 +1,75 @@
+---
+import { DAYS, hourName } from '../demos/curb/model';
+import { url } from '../lib/url';
+
+// Free Curb ATL, running in the page. The script draws 2,035 blocks from public/demo/curbs.json
+// and works out each one's color again whenever the day or hour changes.
+interface Props {
+  /** Where this copy sits, so ids stay unique if a page ever shows two. */
+  id?: string;
+}
+
+const { id = 'curb' } = Astro.props;
+---
+<div class="curb" data-curb data-src={url('demo/curbs.json')}>
+  <div class="curb-side">
+  <div class="curb-intro"><slot /></div>
+  <div class="curb-panel">
+    <p class="curb-readout">
+      <span class="curb-big"><b data-curb-km>120</b> km</span>
+      <span class="curb-big-label">of curb is free to park on</span>
+    </p>
+    <p class="curb-when"><span data-curb-time>A weekday at 2 PM</span>. <span data-curb-unlocked></span></p>
+    <p class="curb-rule" data-curb-rule>City meters run Monday to Saturday, 7 AM to 10 PM.</p>
+
+    <div class="curb-controls">
+      <fieldset class="curb-days">
+        <legend>Day</legend>
+        {DAYS.map((day, i) => (
+          <label>
+            <input type="radio" name={`${id}-day`} value={i} data-curb-day />
+            <span aria-hidden="true">{day.slice(0, 3)}</span>
+            <span class="visually-hidden">{day}</span>
+          </label>
+        ))}
+      </fieldset>
+      <div class="curb-hour">
+        <label for={`${id}-hour`}>Hour <output data-curb-hour-name>{hourName(14)}</output></label>
+        <input id={`${id}-hour`} type="range" min="0" max="23" step="1" value="14" data-curb-hour />
+        <div class="curb-meter" aria-hidden="true"><i></i><span>meters run 7 AM to 10 PM</span></div>
+      </div>
+      <p class="curb-buttons">
+        <button type="button" data-curb-now>Right now</button>
+        <button type="button" data-curb-play aria-pressed="false">Play the week</button>
+      </p>
+    </div>
+    <p class="visually-hidden" aria-live="polite" data-curb-live></p>
+  </div>
+  </div>
+
+  <figure class="curb-map">
+    <canvas data-curb-canvas role="img" aria-label="Map of Atlanta street blocks, colored by whether parking is free."></canvas>
+    <figcaption>
+      <span class="curb-block" data-curb-block data-hint="Point at or tap a street to see its rule.">Point at or tap a street to see its rule.</span>
+      <span class="curb-legend">
+        <span><i class="k-free"></i>Free</span>
+        <span><i class="k-limited"></i>Free, time limit</span>
+        <span><i class="k-paid"></i>Paid</span>
+        <span><i class="k-other"></i>Other</span>
+      </span>
+    </figcaption>
+  </figure>
+
+  <p class="curb-nojs">The map runs in your browser and needs JavaScript. <a href="https://kcmake.github.io/atl-free-parking/">Open the full map</a> instead.</p>
+</div>
+
+<script>
+  import { initCurb } from '../demos/curb/map';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-curb]')) {
+    initCurb(root).catch((error) => {
+      console.error(error);
+      root.classList.add('is-broken');
+    });
+  }
+</script>

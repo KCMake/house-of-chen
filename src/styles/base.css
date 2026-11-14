@@ -47,6 +47,15 @@ ul, ol { margin: 0; padding: 0; }
 .excerpt-code .s, .excerpt-code .n { color: var(--string); }
 .excerpt-note { max-width: 68ch; margin-top: 8px; color: var(--soft); font-size: 15px; }
 
+/* Project drawings: one grid, one line weight, a few colors. See src/art/index.ts. */
+.art { display: block; width: 100%; height: auto; color: var(--ink); fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.art .g { stroke: var(--c-free); }
+.art .r { stroke: var(--c-paid); }
+.art .o { stroke: var(--faint); }
+.art .f { fill: currentColor; stroke: none; }
+.art .fg { fill: var(--c-free); stroke: none; }
+.art .fy { fill: var(--mark-open); stroke: none; }
+
 /* Moving between pages fades instead of cutting, in browsers that support it. */
 @view-transition { navigation: auto; }
 @media (prefers-reduced-motion: reduce) {

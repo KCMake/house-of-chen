@@ -1,12 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import Footer from '../components/Footer.astro';
-import Sentence from '../components/Sentence.astro';
+import CurbDemo from '../components/CurbDemo.astro';
 import TopBar from '../components/TopBar.astro';
 import WorkList from '../components/WorkList.astro';
 import { person } from '../data/site';
 import { url } from '../lib/url';
 import '../styles/home.css';
+import '../styles/demo.css';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -25,10 +26,21 @@ const jsonLd = {
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)} />
   <TopBar />
   <main id="main">
-    <section class="intro" aria-labelledby="intro-title">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="wrap">
-        <h1 class="visually-hidden" id="intro-title">{person.name}</h1>
-        <Sentence />
+        <CurbDemo>
+          <h1 class="hero-title" id="hero-title">{person.name}</h1>
+          <p class="hero-lede">I study computer engineering at Georgia Tech and build software that does a real job for someone. I'm looking for a software engineering internship for Summer 2027.</p>
+          <p class="hero-links">
+            <a href="#contact" data-mail={person.email.user} data-domain={person.email.domain}>Email me</a>
+            <a href={url('resume/')}>Resume</a>
+            <a href={person.github}>GitHub</a>
+          </p>
+          <div class="running">
+            <h2 class="running-title"><span class="running-live" aria-hidden="true"></span>Running on this page: <b>Free Curb ATL</b></h2>
+            <p class="running-note">My map of which Atlanta curbs are free to park on. Change the day or the hour and it works out all 2,035 blocks again. <a href={url('work/free-curb-atl/')}>How I built it</a></p>
+          </div>
+        </CurbDemo>
       </div>
     </section>
     <WorkList />

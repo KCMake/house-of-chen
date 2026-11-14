@@ -3,7 +3,7 @@ import { person } from '../data/site';
 import { url } from '../lib/url';
 
 interface Props {
-  current?: 'work' | 'resume';
+  current?: 'work' | 'about' | 'resume';
 }
 
 const { current } = Astro.props;
@@ -13,6 +13,7 @@ const { current } = Astro.props;
     <a class="topbar-name" href={url()}>{person.name}</a>
     <nav class="topbar-nav" aria-label="Site">
       <a href={url('#work')} aria-current={current === 'work' ? 'page' : undefined}>Work</a>
+      <a href={url('about/')} aria-current={current === 'about' ? 'page' : undefined}>About</a>
       <a href={url('resume/')} aria-current={current === 'resume' ? 'page' : undefined}>Resume</a>
       <a href="#contact" data-mail={person.email.user} data-domain={person.email.domain}>Email</a>
     </nav>

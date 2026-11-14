@@ -10,6 +10,11 @@
   --mark: #ffe45a;
   --mark-open: #ffd226;
   --focus: #1d4ed8;
+  /* Map colors, the same ones Free Curb ATL uses. */
+  --c-free: #12804a;
+  --c-limited: #0a7a8a;
+  --c-paid: #c0232e;
+  --c-other: #c9cdc6;
   --text: 'Familjen Grotesk Variable', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'Source Code Pro', ui-monospace, Menlo, Consolas, monospace;
   --wrap: 1040px;
@@ -28,6 +33,10 @@
     --mark: rgb(255 214 64 / 0.34);
     --mark-open: rgb(255 204 32 / 0.52);
     --focus: #8ea9ff;
+    --c-free: #3ccb7c;
+    --c-limited: #3fc9d8;
+    --c-paid: #ff6670;
+    --c-other: #3a4146;
     color-scheme: dark;
   }
 }

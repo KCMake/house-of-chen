@@ -1,0 +1,20 @@
+---
+import type { Spec } from '../data/types';
+
+interface Props {
+  spec: Spec;
+}
+
+const { spec } = Astro.props;
+---
+{spec.folded ? (
+  <details class="spec">
+    <summary>{spec.title}</summary>
+    <table><tbody>{spec.rows.map(([name, value]) => <tr><th scope="row">{name}</th><td>{value}</td></tr>)}</tbody></table>
+  </details>
+) : (
+  <div class="spec">
+    <h3>{spec.title}</h3>
+    <table><tbody>{spec.rows.map(([name, value]) => <tr><th scope="row">{name}</th><td>{value}</td></tr>)}</tbody></table>
+  </div>
+)}

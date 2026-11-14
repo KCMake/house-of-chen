@@ -5,6 +5,9 @@ const project: Project = {
   name: 'ITrade',
   line: 'An open-source framework for auditable AI trading agents. Every action is logged, rate limits are hard, and runs happen in a sandbox.',
   result: 'in progress',
+  group: 'projects',
+  order: 90,
+  tags: ['AI', 'Tools'],
   stack: ['Python', 'Docker', 'MCP', 'OAuth 2.0'],
 };
 

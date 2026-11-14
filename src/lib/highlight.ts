@@ -12,18 +12,21 @@ const KEYWORDS: Record<CodeLang, string[]> = {
     'private', 'enum', 'protocol', 'init', 'self', 'true', 'false', 'nil', 'where', 'import', 'in'],
   ts: ['import', 'export', 'const', 'let', 'function', 'return', 'type', 'interface', 'as', 'from', 'new',
     'if', 'else', 'true', 'false'],
+  cpp: ['float', 'int', 'const', 'void', 'bool', 'for', 'while', 'if', 'else', 'return', 'true', 'false', 'static'],
 };
 
 const COMMENT: Record<CodeLang, string> = {
   python: String.raw`#[^\n]*`,
   swift: String.raw`\/\/[^\n]*`,
   ts: String.raw`\/\*[\s\S]*?\*\/|\/\/[^\n]*`,
+  cpp: String.raw`\/\*[\s\S]*?\*\/|\/\/[^\n]*`,
 };
 
 const STRING: Record<CodeLang, string> = {
   python: String.raw`[rbf]?"""[\s\S]*?"""|[rbf]?"(?:\\.|[^"\\\n])*"|[rbf]?'(?:\\.|[^'\\\n])*'`,
   swift: String.raw`"(?:\\.|[^"\\\n])*"`,
   ts: String.raw`'(?:\\.|[^'\\\n])*'|"(?:\\.|[^"\\\n])*"`,
+  cpp: String.raw`"(?:\\.|[^"\\\n])*"`,
 };
 
 const CLASS = ['c', 's', 'k', 'n'] as const;

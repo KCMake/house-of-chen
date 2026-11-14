@@ -22,11 +22,12 @@ const image = new URL(url('og.png'), Astro.site);
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
-      // With JavaScript, the paragraph's phrases start closed. If the page script never runs,
+      // With JavaScript, the About paragraph's phrases start closed. If its script never runs,
       // open everything again so nothing is hidden for good.
       document.documentElement.classList.add('js');
       addEventListener('load', function () {
-        if (!document.documentElement.classList.contains('sentence-ready')) document.documentElement.classList.remove('js');
+        var root = document.documentElement;
+        if (document.querySelector('[data-sentence]') && !root.classList.contains('sentence-ready')) root.classList.remove('js');
       });
     </script>
     <title>{title}</title>

@@ -26,10 +26,12 @@ try {
   await mkdir('docs', { recursive: true });
   const desk = await browser.newPage({ viewport: { width: 1280, height: 800 }, reducedMotion: 'reduce' });
   await desk.goto(origin, { waitUntil: 'networkidle' });
+  await desk.locator('[data-curb].is-running').waitFor();
+  await desk.getByRole('slider', { name: /Hour/ }).fill('14');
+  await desk.getByRole('radio', { name: 'Tuesday' }).check({ force: true });
   await desk.screenshot({ path: 'docs/home.png' });
-  await desk.getByRole('button', { name: 'a map of every free curb in Atlanta', exact: true }).click();
-  await desk.getByRole('button', { name: 'worked out all 2,035 blocks', exact: true }).click();
-  await desk.screenshot({ path: 'docs/home-open.png' });
+  await desk.getByRole('radio', { name: 'Sunday' }).check({ force: true });
+  await desk.screenshot({ path: 'docs/home-sunday.png' });
   await desk.goto(`${origin}work/free-curb-atl/`, { waitUntil: 'networkidle' });
   await desk.screenshot({ path: 'docs/write-up.png' });
 } finally {

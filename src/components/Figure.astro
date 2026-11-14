@@ -1,0 +1,18 @@
+---
+import type { Figure } from '../data/types';
+import { url } from '../lib/url';
+
+// A photo, drawing, or chart with its caption. The picture links to the full-size file.
+interface Props {
+  figure: Figure;
+  /** The first picture on a page loads right away. The rest wait until they are near the screen. */
+  eager?: boolean;
+}
+
+const { figure, eager = false } = Astro.props;
+const src = url(figure.src);
+---
+<figure class:list={['fig', { 'fig-paper': figure.paper }]}>
+  <a href={src}><img src={src} alt={figure.alt} width={figure.width} height={figure.height} loading={eager ? 'eager' : 'lazy'} decoding="async" /></a>
+  <figcaption>{figure.caption}</figcaption>
+</figure>
