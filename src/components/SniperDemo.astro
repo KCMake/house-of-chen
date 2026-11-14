@@ -1,0 +1,34 @@
+---
+import { LABELS, MOVES, block, state, type Seats } from '../demos/sniper/model';
+
+// CourseSniper's seat rule on the example section from its README. The real bot checks the
+// school's registration system once a minute. Here, each button is one check.
+const section = 'ECE 3741 - L03 - 20402 - Instrumentation and Electronics Lab';
+const seats: Seats = { capacity: 36, taken: 36, waitCapacity: 10, waitTaken: 9 };
+---
+<div class="sniper" data-sniper data-section={section} data-seats={JSON.stringify(seats)}>
+  <div class="sniper-section">
+    <p class="sniper-status">The section is <b data-sniper-state data-state={state(seats)}>{LABELS[state(seats)]}</b></p>
+    <div class="sniper-rows">
+      <p>Seats</p><div class="sniper-dots" data-sniper-seats aria-hidden="true"></div>
+      <p>Waitlist</p><div class="sniper-dots" data-sniper-wait aria-hidden="true"></div>
+    </div>
+    <pre class="sniper-block" data-sniper-block tabindex="0" role="region" aria-label="Seat counts">{block(section, seats)}</pre>
+    <p class="sniper-moves">
+      {(Object.keys(MOVES) as (keyof typeof MOVES)[]).map((move) => <button type="button" data-sniper-move={move}>{MOVES[move]}</button>)}
+      <button type="button" class="sniper-reset" data-sniper-reset>Start over</button>
+    </p>
+  </div>
+  <div class="sniper-chat">
+    <p class="sniper-chat-title">What the bot posts</p>
+    <p class="sniper-empty" data-sniper-empty>Nothing yet. Make something happen at registration.</p>
+    <ol class="sniper-log" data-sniper-log aria-live="polite"></ol>
+  </div>
+  <p class="demo-nojs">This demo runs in your browser and needs JavaScript.</p>
+</div>
+
+<script>
+  import { initSniper } from '../demos/sniper/demo';
+
+  for (const root of document.querySelectorAll<HTMLElement>('[data-sniper]')) initSniper(root);
+</script>

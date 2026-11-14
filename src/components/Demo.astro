@@ -1,0 +1,23 @@
+---
+import CurbDemo from './CurbDemo.astro';
+import SniperDemo from './SniperDemo.astro';
+import type { Project } from '../data/types';
+
+// The running piece at the top of a write-up. To add one: build it under src/demos/, give it a
+// component, add its name to `demo` in src/data/types.ts, and add a line here.
+interface Props {
+  demo: NonNullable<Project['demo']>;
+}
+
+const { demo } = Astro.props;
+const notes = {
+  curb: 'This is the real data and the real meter clock. Pick a day and an hour, or tap a street.',
+  sniper: "This is the bot's seat rule on the example section from its README. The real bot checks the school once a minute. Here, each button is one check.",
+};
+---
+<section class="w-run" aria-labelledby="run-it">
+  <h2 id="run-it">Run it</h2>
+  <p class="w-run-note">{notes[demo]}</p>
+  {demo === 'curb' && <CurbDemo id="curb-page" />}
+  {demo === 'sniper' && <SniperDemo />}
+</section>
