@@ -1,0 +1,111 @@
+/* The first screen: who I am, and one of my projects running. */
+.hero { padding-top: clamp(8px, 2vw, 24px); }
+.hero .wrap { max-width: 1200px; }
+.hero-title { font-size: clamp(44px, 3vw + 22px, 64px); line-height: 1.02; font-weight: 700; letter-spacing: -0.035em; }
+.hero-lede { max-width: 30em; margin-top: 14px; font-size: clamp(18px, 0.5vw + 15px, 21px); line-height: 1.45; letter-spacing: -0.005em; }
+.hero-links { display: flex; flex-wrap: wrap; gap: 0 22px; margin-top: 6px; }
+.hero-links a { padding-block: 8px; font-weight: 600; }
+
+.running { margin-top: clamp(20px, 3vw, 32px); padding-top: 14px; border-top: 1px solid var(--ink); }
+.running-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 2px 24px; }
+.running-title { font-size: 17px; font-weight: 400; }
+.running-title b { font-weight: 700; }
+.running-live { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--c-free); vertical-align: 1px; }
+.running-note { max-width: 44em; margin-top: 4px; color: var(--soft); }
+
+/* Free Curb ATL */
+.curb { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 7fr); gap: 24px clamp(24px, 5vw, 72px); align-items: start; }
+.curb-intro:empty { display: none; }
+.curb-intro:not(:empty) + .curb-panel { margin-top: 14px; }
+.curb-readout { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; }
+.curb-big { font-size: clamp(48px, 2vw + 30px, 64px); line-height: 1; font-weight: 700; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: var(--c-free); }
+.curb-big-label { font-size: 20px; font-weight: 600; }
+.curb-when { margin-top: 6px; }
+.curb-when [data-curb-time] { font-weight: 650; }
+.curb-rule { color: var(--soft); font-size: 15px; }
+
+.curb-controls { display: grid; gap: 14px; margin-top: 16px; }
+.curb-days { display: flex; min-width: 0; margin: 0; padding: 0; border: 0; }
+.curb-days legend, .curb-hour label { margin-bottom: 6px; padding: 0; color: var(--soft); font-size: 15px; }
+.curb-days label { position: relative; flex: 1 1 0; }
+.curb-days input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.curb-days label > span[aria-hidden] { display: grid; place-items: center; min-height: 44px; border: 1px solid var(--line); border-left-width: 0; font-size: 15px; font-weight: 600; }
+.curb-days label:first-of-type > span[aria-hidden] { border-left-width: 1px; border-radius: 4px 0 0 4px; }
+.curb-days label:last-of-type > span[aria-hidden] { border-radius: 0 4px 4px 0; }
+.curb-days input:hover + span { background: var(--code-bg); }
+.curb-days input:checked + span { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.curb-days input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+.curb-hour label { display: flex; justify-content: space-between; }
+.curb-hour output { color: var(--ink); font: 600 14px/1.7 var(--mono); }
+.curb-hour input { display: block; width: 100%; height: 32px; margin: 0; accent-color: var(--ink); cursor: pointer; }
+/* The thumb is about 16px wide, so the band is inset by half a thumb to line up with the hours. */
+.curb-meter { position: relative; height: 22px; margin-inline: 8px; color: var(--soft); font-size: 13px; }
+.curb-meter i { position: absolute; left: calc(7 / 23 * 100%); right: calc(1 / 23 * 100%); top: 0; height: 4px; border-radius: 2px; background: var(--c-paid); }
+.curb-meter span { position: absolute; left: calc(7 / 23 * 100%); top: 6px; white-space: nowrap; }
+
+.curb-buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+.curb-buttons button { min-height: 44px; padding: 0 16px; border: 1px solid var(--ink); border-radius: 4px; background: transparent; color: var(--ink); font: 600 15px/1 var(--text); cursor: pointer; transition-property: background-color, color; transition-duration: 0.12s; transition-timing-function: ease-out; }
+.curb-buttons button:hover, .curb-buttons button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+.curb-map { position: sticky; top: 12px; margin: 0; }
+.curb-map canvas { display: block; width: 100%; aspect-ratio: 19 / 20; touch-action: pan-y; }
+.curb-map figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 20px; margin-top: 8px; color: var(--soft); font-size: 14px; }
+.curb-block { min-height: 1.6em; color: var(--ink); }
+.curb-legend { display: flex; flex-wrap: wrap; gap: 2px 14px; }
+.curb-legend i { display: inline-block; width: 14px; height: 3px; margin-right: 6px; border-radius: 2px; vertical-align: middle; }
+.k-free { background: var(--c-free); }
+.k-limited { background: var(--c-limited); }
+.k-paid { background: var(--c-paid); }
+.k-other { background: var(--c-other); }
+
+/* Until the script has drawn the map, and if it never does, say so plainly. */
+.curb-nojs { grid-column: 1 / -1; color: var(--soft); }
+.js .curb-nojs { display: none; }
+.curb.is-broken .curb-nojs { display: block; }
+html:not(.js) .curb-controls, html:not(.js) .curb-map, .curb.is-broken .curb-controls, .curb.is-broken .curb-map { display: none; }
+
+@media (max-width: 820px) {
+  .curb { grid-template-columns: minmax(0, 1fr); }
+  .curb-side { display: contents; }
+  .curb-intro { order: 1; }
+  .curb-map { position: static; order: 2; }
+  .curb-panel { order: 3; }
+  .curb-intro:not(:empty) + .curb-panel { margin-top: 0; }
+  .curb-map canvas { max-height: 78vh; }
+}
+
+/* A demo on a write-up page */
+.w-run { margin-top: clamp(40px, 5vw, 64px); padding-top: 14px; border-top: 1px solid var(--ink); }
+.w-run h2 { font-size: 17px; font-weight: 700; }
+.w-run-note { max-width: 44em; margin: 4px 0 20px; color: var(--soft); }
+.demo-nojs { grid-column: 1 / -1; color: var(--soft); }
+.js .demo-nojs { display: none; }
+
+/* CourseSniper */
+.sniper { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px clamp(24px, 4vw, 56px); align-items: start; }
+html:not(.js) .sniper-moves { display: none; }
+.sniper-status { font-size: 20px; font-weight: 600; }
+.sniper-status b { padding: 2px 8px; border-radius: 3px; font: 600 15px/1.6 var(--mono); }
+.sniper-status b[data-state="open"] { background: var(--c-free); color: var(--paper); }
+.sniper-status b[data-state="waitlist"] { background: var(--mark-open); color: var(--ink); }
+.sniper-status b[data-state="closed"] { background: var(--c-paid); color: var(--paper); }
+.sniper-rows { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 16px; align-items: start; margin-top: 16px; color: var(--soft); font-size: 15px; }
+.sniper-dots { display: flex; flex-wrap: wrap; gap: 4px; padding-top: 5px; }
+.sniper-dots i { width: 12px; height: 12px; border: 1.5px solid var(--ink); border-radius: 2px; }
+.sniper-dots i.on { background: var(--ink); }
+.sniper-block { margin: 16px 0 0; padding: 12px 14px; overflow-x: auto; border: 1px solid var(--line); border-radius: 4px; background: var(--code-bg); font: 400 13.5px/1.55 var(--mono); }
+.sniper-moves { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.sniper-moves button { min-height: 44px; padding: 0 14px; border: 1px solid var(--ink); border-radius: 4px; background: transparent; color: var(--ink); font: 600 15px/1 var(--text); cursor: pointer; transition-property: background-color, color, opacity; transition-duration: 0.12s; transition-timing-function: ease-out; }
+.sniper-moves button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+.sniper-moves button:disabled { border-color: var(--line); color: var(--faint); cursor: not-allowed; }
+.sniper-moves .sniper-reset { border-color: transparent; text-decoration: underline; text-underline-offset: 0.2em; }
+.sniper-chat-title { color: var(--soft); font-size: 15px; font-weight: 600; }
+.sniper-empty { margin-top: 10px; color: var(--soft); }
+.sniper-log { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin-top: 10px; list-style: none; }
+.sniper-msg { padding: 10px 14px; border-left: 3px solid var(--line); color: var(--soft); font-size: 15px; }
+.sniper-msg.is-ping { border-left-color: var(--c-free); color: var(--ink); font-weight: 600; }
+.sniper-msg pre { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font: 400 13px/1.5 var(--mono); }
+@media (max-width: 760px) {
+  .sniper { grid-template-columns: minmax(0, 1fr); }
+}
