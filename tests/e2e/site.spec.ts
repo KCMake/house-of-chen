@@ -240,7 +240,25 @@ test('a write-up goes from the problem to what shipped', async ({ page }) => {
   await expect(page.locator('.excerpt')).toHaveCount(2);
 });
 
-for (const path of ['./', 'about/', 'work/free-curb-atl/', 'work/coursesniper/', 'work/quill/', 'work/tuck/', 'work/this-site/', 'resume/']) {
+test('a hardware write-up shows its pictures, diagram, tables, and code', async ({ page }) => {
+  await page.goto('work/agrinexus/');
+  await expect(page.getByRole('heading', { level: 2, name: 'How it was tested' })).toBeVisible();
+  await expect(page.locator('.fig img')).toHaveCount(8);
+  for (const img of await page.locator('.fig img').all()) {
+    await img.scrollIntoViewIfNeeded();
+    await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
+    expect((await img.getAttribute('alt'))!.length).toBeGreaterThan(40);
+  }
+  await expect(page.locator('.bd-col')).toHaveCount(3);
+  await expect(page.locator('.bd')).toContainText('GPIO 4 through an IRF520');
+  await expect(page.locator('.spec')).toHaveCount(4);
+  await page.getByText('Bill of materials, $254').click();
+  await expect(page.getByRole('rowheader', { name: 'ESP32-S3-DevKitC-1-N8R8' })).toBeVisible();
+  await expect(page.locator('.excerpt')).toHaveCount(2);
+  await expect(page.locator('.excerpt').last()).toContainText('predict_moisture_delta');
+});
+
+for (const path of ['./', 'about/', 'work/free-curb-atl/', 'work/coursesniper/', 'work/agrinexus/', 'work/quill/', 'work/tuck/', 'work/this-site/', 'resume/']) {
   test(`nothing scrolls sideways on ${path}`, async ({ page }) => {
     await page.goto(path);
     expect(await sidewaysScroll(page)).toBeLessThanOrEqual(0);
@@ -261,7 +279,7 @@ test('a missing page says so', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Nothing here');
 });
 
-for (const path of ['./', 'about/', 'work/free-curb-atl/', 'work/coursesniper/', 'work/this-site/', 'resume/']) {
+for (const path of ['./', 'about/', 'work/free-curb-atl/', 'work/coursesniper/', 'work/agrinexus/', 'work/this-site/', 'resume/']) {
   test(`no serious accessibility problems on ${path}`, async ({ page }) => {
     await page.goto(path);
     await expectNoSeriousIssues(page);

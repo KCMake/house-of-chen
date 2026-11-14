@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { allProjects, lists, writeups } from '../../src/data/projects';
 import { allPhrases, opensExcerpt, paragraphs } from '../../src/data/sentence';
@@ -76,6 +76,39 @@ describe('the code excerpts', () => {
       const file = readFileSync(path, 'utf8').split('\n');
       const quote = e.code.split('\n');
       expect(file.slice(e.startLine - 1, e.startLine - 1 + quote.length)).toEqual(quote);
+    }
+  });
+});
+
+describe('the pictures', () => {
+  const figures = writeups.flatMap((p) => {
+    const w = p.writeup!;
+    return [w.hero, ...(w.figures?.firstTry ?? []), ...(w.figures?.shipped ?? []), ...(w.figures?.tested ?? []), ...(w.broke ?? []).map((b) => b.figure)].filter((f) => f !== undefined);
+  });
+
+  it('all exist under public/', () => {
+    expect(figures.length).toBeGreaterThan(0);
+    for (const f of figures) expect(existsSync(`public/${f.src}`), f.src).toBe(true);
+  });
+
+  it('all say what they show, and carry a size so the page does not jump', () => {
+    for (const f of figures) {
+      expect(f.alt.length, f.src).toBeGreaterThan(40);
+      expect(f.caption.length, f.src).toBeGreaterThan(10);
+      expect(f.width * f.height, f.src).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('a bill of materials', () => {
+  it('adds up to the total in its title', () => {
+    for (const p of writeups) {
+      for (const spec of p.writeup!.specs ?? []) {
+        const total = spec.title.match(/\$(\d+)/);
+        if (!total) continue;
+        const sum = spec.rows.reduce((n, [, price]) => n + Number(price.replace('$', '')), 0);
+        expect(sum, `${p.slug}: ${spec.title}`).toBe(Number(total[1]));
+      }
     }
   });
 });
