@@ -5,8 +5,11 @@ const REPO = 'https://github.com/KCMake/house-of-chen/blob/main';
 const project: Project = {
   slug: 'this-site',
   name: 'This site',
-  line: 'How this portfolio is built: one paragraph that opens in place.',
+  line: 'How this portfolio is built: the projects that can run in a browser run on the page.',
   result: 'open source',
+  group: 'site',
+  order: 10,
+  tags: ['Web'],
   stack: ['TypeScript', 'Astro', 'Vitest', 'Playwright'],
   links: [{ label: 'Code on GitHub', url: 'https://github.com/KCMake/house-of-chen' }],
   writeup: {
@@ -21,6 +24,10 @@ const project: Project = {
     ],
     broke: [
       {
+        what: 'A second version that only told. After the restaurant, the home page became one paragraph whose phrases open in place. It read quickly, but it had no pictures, and every claim in it had to be taken on trust.',
+        fix: 'The first screen now runs one of the projects, and the paragraph moved to the About page.',
+      },
+      {
         what: 'A comma on a line by itself. Each word was an inline-block so it could slide with a transform, but Chrome allows a line break after any inline-block, so the comma after a highlighted phrase could wrap onto the next line alone.',
         fix: 'Words stay ordinary inline text and slide with relative left and top offsets instead, so the browser wraps the paragraph like any other.',
       },
@@ -30,12 +37,16 @@ const project: Project = {
       },
     ],
     shipped: [
-      'The home page is one paragraph. Every highlighted phrase is a button that opens more text in place, and some of what opens has phrases of its own, down to quoted code. A recruiter can stop after the first read, and an engineer can keep going.',
-      'Everything is in the HTML from the start. Without JavaScript, every phrase is already open. With it, the words that have to move slide from their old places to their new ones instead of jumping.',
+      "The first screen says who I am in two sentences, next to Free Curb ATL running on the page. Change the day or the hour and all 2,035 blocks are worked out again, with the same data and the same meter rules as the real map.",
+      "Projects that can run in a browser get a running piece at the top of their write-up. CourseSniper's is its seat rule: you make students drop and register, and the bot decides whether that deserves a ping.",
+      'The About page is one paragraph. Every highlighted phrase opens more text in place, down to quoted code. Without JavaScript, every phrase is already open.',
       'AI tools pull websites toward the same handful of looks. A check in CI reads the code and fails the build when one of those defaults shows up, like a stock typeface, gradient headline text, or blurred glass panels.',
     ],
     steps: [
-      { name: 'src/data/sentence.ts', detail: 'The paragraph as data: plain text, phrases, and what each phrase opens. Tests check that every phrase opens to something and that the open paragraph still reads as clean sentences.' },
+      { name: 'src/demos', detail: 'Each running piece is a pure model with unit tests, plus a small script that draws it. The curb model is checked against the numbers the real map reports.' },
+      { name: 'public/demo/curbs.json', detail: "Free Curb ATL's 2,035 blocks, packed from a megabyte of GeoJSON down to about 90 KB over the wire, and loaded after the text is on screen." },
+      { name: 'src/art', detail: 'One small drawing per project, all on the same grid with the same line weight and colors.' },
+      { name: 'src/data/sentence.ts', detail: 'The About paragraph as data: plain text, phrases, and what each phrase opens. Tests check that every phrase opens to something and that the open paragraph still reads as clean sentences.' },
       { name: 'src/data/projects', detail: 'One file per project. The work list, the write-ups, and the resume read from the same files, so they cannot disagree.' },
       { name: 'Astro', detail: 'Turns the data into static pages. Nothing runs on a server.' },
       { name: 'src/scripts/sentence.ts', detail: 'Opens and closes phrases and slides the words that move. No animation library.' },
