@@ -11,7 +11,7 @@ const project: Project = {
   role: 'Co-founder',
   when: 'Oct 2026 to now',
   stack: [],
-  links: [{ label: 'Join the waitlist', url: 'https://cogni.cogni-site.workers.dev' }],
+  links: [{ label: 'Join the waitlist', url: 'https://cogni.getnow.workers.dev/' }],
 };
 
 export default project;
